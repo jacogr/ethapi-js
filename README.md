@@ -1,6 +1,6 @@
 # ethapi-js
 
-A thin Promise-based wrapper around the Eth APIs.
+A thin, fast low-level Promise-based wrapper around the Eth APIs.
 
 [![Build Status](https://travis-ci.org/jacogr/ethapi-js.svg?branch=master)](https://travis-ci.org/jacogr/ethapi-js)
 [![Coverage Status](https://coveralls.io/repos/github/jacogr/ethapi-js/badge.svg?branch=master)](https://coveralls.io/github/jacogr/ethapi-js?branch=master)
@@ -38,6 +38,14 @@ Promise
   .all([ethapi.eth.coinbase, ethapi.net.listening])
   .then(([coinbase, listening]) => {
     // do stuff here
+  });
+
+// chaining promises
+ethapi.eth
+  .newFilter({...})
+  .then((filterId) => getFilterChanges(filterId))
+  .then((changes) => {
+    console.log(changes);
   });
 ```
 

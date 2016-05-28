@@ -58,7 +58,7 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 - `gasPrice()` - returns the current gas price
 - `getBalance(address, blockNumber = 'latest')` - returns the current address balance as at blockNumber
 
-*TODO* complete the rest
+*TODO* complete the rest as exposed
 
 ### ethapi.net.<...>
 
@@ -74,7 +74,7 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 
 ### ethapi.shh.<...>
 
-*TODO* complete the rest
+*TODO* complete the rest as exposed
 
 ### ethapi.web3.<...>
 

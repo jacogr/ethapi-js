@@ -68,7 +68,9 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 
 ### ethapi.personal.<...>
 
-*TODO* complete the rest
+- `listAccounts()` - list all the available accounts
+- `newAccount(password)` - creates a new account
+- `unlockAccount(account, password, duration = 5)` - unlocks the account
 
 ### ethapi.shh.<...>
 

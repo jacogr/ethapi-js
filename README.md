@@ -35,7 +35,10 @@ ethapi.eth
 
 // multiple promises
 Promise
-  .all([ethapi.eth.coinbase, ethapi.net.listening])
+  .all([
+    ethapi.eth.coinbase(),
+    ethapi.net.listening()
+  ])
   .then(([coinbase, listening]) => {
     // do stuff here
   });

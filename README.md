@@ -15,6 +15,8 @@ A thin, fast low-level Promise-based wrapper around the Eth APIs.
 
 ## usage
 
+### initialisation
+
 ```
 // import the transport (currently only JSON RPC)
 import JsonRpc from 'ethapi-js/lib/transport/jsonRpc';
@@ -25,7 +27,11 @@ import EthApi from 'ethapi-js';
 // do the setup
 const transport = new JsonRpc('127.0.0.1', 8545);
 const ethapi = new EthApi(transport);
+```
 
+### making calls
+
+```
 // perform a call
 ethapi.eth
   .coinbase()

@@ -57,8 +57,14 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 - `estimateGas(options)` - performs a *fake* call uisng the options, returning the used gas
 - `gasPrice()` - returns the current gas price
 - `getBalance(address, blockNumber = 'latest')` - returns the current address balance as at blockNumber
+- `getBlockByHash(hash, full = false)` - gets the block by the specified hash
+- `getBlockByNumber(blockNumber = 'latest', full = false)` - gets the block by blockNumber
+- `getBlockTransactionCountByHash(hash)` - transaction count in specified hash
+- `getBlockTransactionCountByNumber(blockNumber = 'latest')` - transaction count by blockNumber
+- `getCode(address, blockNumber = 'latest')` - get the deployed code at address
+- `getCompilers()` - get a list of the available compilers
 
-*TODO* complete the rest as exposed
+*TODO* complete the rest as exposed in the code
 
 ### ethapi.net.<...>
 
@@ -74,7 +80,7 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 
 ### ethapi.shh.<...>
 
-*TODO* complete the rest as exposed
+*TODO* complete the rest as exposed in the code
 
 ### ethapi.web3.<...>
 

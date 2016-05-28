@@ -60,9 +60,11 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 
 *TODO* complete the rest
 
-### ethpai.net.<...>
+### ethapi.net.<...>
 
-*TODO* complete the rest
+- `listening()` - returns the listening status of the network
+- `peerCount()` - returns the number of connected peers
+- `version()` - returns the network version
 
 ### ethapi.personal.<...>
 

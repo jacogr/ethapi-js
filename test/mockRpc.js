@@ -25,3 +25,25 @@ export function mockRpc (requests) {
 
   return scope;
 }
+
+export function endpointTest (instance, moduleId, name) {
+  let scope;
+
+  before(() => {
+    scope = mockRpc([{ method: `${moduleId}_${name}`, reply: {} }]);
+    return instance[name]();
+  });
+
+  it(`maps ${moduleId}_${name}`, () => {
+    expect(scope.isDone()).to.be.true;
+  });
+}
+
+export function endpointDescribe (instance, moduleId) {
+  describe('endpoints', () => {
+    Object
+      .getOwnPropertyNames(Object.getPrototypeOf(instance))
+      .filter((name) => name !== 'constructor')
+      .forEach((name) => endpointTest(instance, moduleId, name));
+  });
+}

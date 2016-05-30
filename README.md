@@ -71,7 +71,7 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 - `call(options, blockNumber = 'latest')` - performs a call
 - `coinbase()` - returns the current coinbase (base account) for the running instance
 - `compile[LLL|Serpent|Solidity](code)` - compiles the supplied code using the required compiler
-- `estimateGas(options)` - performs a *fake* call uisng the options, returning the used gas
+- `estimateGas(options)` - performs a *fake* call using the options, returning the used gas
 - `gasPrice()` - returns the current gas price
 - `getBalance(address, blockNumber = 'latest')` - returns the current address balance as at blockNumber
 - `getBlockByHash(hash, full = false)` - gets the block by the specified hash
@@ -80,8 +80,35 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 - `getBlockTransactionCountByNumber(blockNumber = 'latest')` - transaction count by blockNumber
 - `getCode(address, blockNumber = 'latest')` - get the deployed code at address
 - `getCompilers()` - get a list of the available compilers
+- `getFilterChanges(filterId)` - returns the changes to a specified filterId
+- `getFilterLogs(filterId)` - returns the logs for a specified filterId
+- `getLogs(options)` - returns logs
+- `getStorageAt(address, index = 0, blockNumber = 'latest')` - retrieve the store at address
+- `getTransactionByBlockHashAndIndex(hash, index = 0)`
+- `getTransactionByBlockNumberAndIndex(blockNumber = 'latest', index = 0)`
+- `getTransactionByHash(hash)`
+- `getTransactionCount(address, blockNumber = 'latest')`
+- `getTransactionReceipt(txhash)`
+- `getUncleByBlockHashAndIndex(hash, index = 0)`
+- `getUncleByBlockNumberAndIndex(blockNumber = 'latest', index = 0)`
+- `getUncleCountByBlockHash(hash)`
+- `getUncleCountByBlockNumber(blockNumber = 'latest')`
+- `getWork()`
+- `hashrate()`
+- `mining()`
+- `newBlockFilter()`
+- `newFilter(options)`
+- `newPendingTransactionFilter()`
+- `protocolVersion()`
+- `sendRawTransaction(data)`
+- `sendTransaction(options)`
+- `sign()`
+- `submitHashrate(hashrate, clientId)`
+- `submitWork(nonce, powHash, mixDigest)`
+- `syncing()`
+- `uninstallFilter(filterId)`
 
-*TODO* complete the rest as exposed in the code
+*TODO* complete the descriptions where not available
 
 ### ethapi.net.<...>
 
@@ -97,7 +124,18 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 
 ### ethapi.shh.<...>
 
-*TODO* complete the rest as exposed in the code
+- `addToGroup(identity)`
+- `getFilterChanges(filterId)`
+- `getMessages(filterId)`
+- `hasIdentity(identity)`
+- `newFilter(options)`
+- `newGroup()`
+- `newIdentity()`
+- `post(options)`
+- `uninstallFilter(filterId)`
+- `version()`
+
+*TODO* complete the descriptions where not available
 
 ### ethapi.web3.<...>
 

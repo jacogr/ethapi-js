@@ -1,5 +1,9 @@
 'use strict';
 
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var EthAbi = _interopDefault(require('ethabi-js'));
+
 var babelHelpers = {};
 
 babelHelpers.classCallCheck = function (instance, Constructor) {
@@ -28,7 +32,7 @@ babelHelpers.createClass = function () {
 
 babelHelpers;
 
-/* global fetch */var
+/* global fetch */var 
 JsonRpc = function () {
   function JsonRpc(host, port) {babelHelpers.classCallCheck(this, JsonRpc);
     this._host = host;
@@ -37,10 +41,10 @@ JsonRpc = function () {
 
 
     method, params) {
-      return JSON.stringify({
-        jsonrpc: '2.0',
-        method: method,
-        params: params,
+      return JSON.stringify({ 
+        jsonrpc: '2.0', 
+        method: method, 
+        params: params, 
         id: this._id++ });} }, { key: '_encodeOptions', value: function _encodeOptions(
 
 
@@ -48,14 +52,14 @@ JsonRpc = function () {
     method, params) {
       var json = this._encodeBody(method, params);
 
-      return {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Content-Length': json.length },
+      return { 
+        method: 'POST', 
+        headers: { 
+          'Accept': 'application/json', 
+          'Content-Type': 'application/json', 
+          'Content-Length': json.length }, 
 
-        body: json };} }, { key: '_getEndpoint', value: function _getEndpoint()
+        body: json };} }, { key: '_getEndpoint', value: function _getEndpoint() 
 
 
 
@@ -79,13 +83,50 @@ JsonRpc = function () {
 
         return result.result;});} }]);return JsonRpc;}();
 
-var Eth = function () {
-  function Eth(transport) {babelHelpers.classCallCheck(this, Eth);
-    this._transport = transport;}babelHelpers.createClass(Eth, [{ key: 'accounts', value: function accounts()
+function isFunction(test) {
+  return Object.prototype.toString.call(test) === '[object Function]';}
+
+
+function isInstanceOf(test, clazz) {
+  return test instanceof clazz;}
+
+var 
+
+Contract = function () {
+  function Contract(eth, abi) {babelHelpers.classCallCheck(this, Contract);
+    if (!isInstanceOf(eth, EthApi)) {
+      throw new Error('EthApi needs to be provided to Contract instance');} else 
+    if (!abi) {
+      throw new Error('Object ABI needs to be provided to Contract instance');}
+
+
+    this._eth = eth;
+    this._abi = new EthAbi(abi);}babelHelpers.createClass(Contract, [{ key: 'at', set: function set(
+
+
+    at) {
+      this._at = at;
+      return this;}, get: function get() 
 
 
     {
-      return this._transport.execute('eth_accounts');} }, { key: 'blockNumber', value: function blockNumber()
+      return this._at;} }, { key: 'eth', get: function get() 
+
+
+    {
+      return this._eth;} }, { key: 'abi', get: function get() 
+
+
+    {
+      return this._abi;} }]);return Contract;}();
+
+var Eth = function () {
+  function Eth(transport) {babelHelpers.classCallCheck(this, Eth);
+    this._transport = transport;}babelHelpers.createClass(Eth, [{ key: 'accounts', value: function accounts() 
+
+
+    {
+      return this._transport.execute('eth_accounts');} }, { key: 'blockNumber', value: function blockNumber() 
 
 
     {
@@ -93,7 +134,7 @@ var Eth = function () {
 
 
     options) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
-      return this._transport.execute('eth_call', options, blockNumber);} }, { key: 'coinbase', value: function coinbase()
+      return this._transport.execute('eth_call', options, blockNumber);} }, { key: 'coinbase', value: function coinbase() 
 
 
     {
@@ -113,7 +154,7 @@ var Eth = function () {
 
 
     options) {
-      return this._transport.execute('eth_estimateGas', options);} }, { key: 'gasPrice', value: function gasPrice()
+      return this._transport.execute('eth_estimateGas', options);} }, { key: 'gasPrice', value: function gasPrice() 
 
 
     {
@@ -125,7 +166,7 @@ var Eth = function () {
 
 
     hash) {var full = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
-      return this._transport.execute('eth_getBlockByHash', hash, full);} }, { key: 'getBlockByNumber', value: function getBlockByNumber()
+      return this._transport.execute('eth_getBlockByHash', hash, full);} }, { key: 'getBlockByNumber', value: function getBlockByNumber() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];var full = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
@@ -133,7 +174,7 @@ var Eth = function () {
 
 
     hash) {
-      return this._transport.execute('eth_getBlockTransactionCountByHash', hash);} }, { key: 'getBlockTransactionCountByNumber', value: function getBlockTransactionCountByNumber()
+      return this._transport.execute('eth_getBlockTransactionCountByHash', hash);} }, { key: 'getBlockTransactionCountByNumber', value: function getBlockTransactionCountByNumber() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];
@@ -141,7 +182,7 @@ var Eth = function () {
 
 
     address) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
-      return this._transport.execute('eth_getCode', address, blockNumber);} }, { key: 'getCompilers', value: function getCompilers()
+      return this._transport.execute('eth_getCode', address, blockNumber);} }, { key: 'getCompilers', value: function getCompilers() 
 
 
     {
@@ -165,7 +206,7 @@ var Eth = function () {
 
 
     hash) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-      return this._transport.execute('eth_getTransactionByBlockHashAndIndex', hash, index);} }, { key: 'getTransactionByBlockNumberAndIndex', value: function getTransactionByBlockNumberAndIndex()
+      return this._transport.execute('eth_getTransactionByBlockHashAndIndex', hash, index);} }, { key: 'getTransactionByBlockNumberAndIndex', value: function getTransactionByBlockNumberAndIndex() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -185,7 +226,7 @@ var Eth = function () {
 
 
     hash) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-      return this._transport.execute('eth_getUncleByBlockHashAndIndex', hash, index);} }, { key: 'getUncleByBlockNumberAndIndex', value: function getUncleByBlockNumberAndIndex()
+      return this._transport.execute('eth_getUncleByBlockHashAndIndex', hash, index);} }, { key: 'getUncleByBlockNumberAndIndex', value: function getUncleByBlockNumberAndIndex() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -193,23 +234,23 @@ var Eth = function () {
 
 
     hash) {
-      return this._transport.execute('eth_getUncleCountByBlockHash', hash);} }, { key: 'getUncleCountByBlockNumber', value: function getUncleCountByBlockNumber()
+      return this._transport.execute('eth_getUncleCountByBlockHash', hash);} }, { key: 'getUncleCountByBlockNumber', value: function getUncleCountByBlockNumber() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];
-      return this._transport.execute('eth_getUncleCountByBlockNumber', blockNumber);} }, { key: 'getWork', value: function getWork()
+      return this._transport.execute('eth_getUncleCountByBlockNumber', blockNumber);} }, { key: 'getWork', value: function getWork() 
 
 
     {
-      return this._transport.execute('eth_getWork');} }, { key: 'hashrate', value: function hashrate()
+      return this._transport.execute('eth_getWork');} }, { key: 'hashrate', value: function hashrate() 
 
 
     {
-      return this._transport.execute('eth_hashrate');} }, { key: 'mining', value: function mining()
+      return this._transport.execute('eth_hashrate');} }, { key: 'mining', value: function mining() 
 
 
     {
-      return this._transport.execute('eth_mining');} }, { key: 'newBlockFilter', value: function newBlockFilter()
+      return this._transport.execute('eth_mining');} }, { key: 'newBlockFilter', value: function newBlockFilter() 
 
 
     {
@@ -217,11 +258,11 @@ var Eth = function () {
 
 
     options) {
-      return this._transport.execute('eth_newFilter', options);} }, { key: 'newPendingTransactionFilter', value: function newPendingTransactionFilter()
+      return this._transport.execute('eth_newFilter', options);} }, { key: 'newPendingTransactionFilter', value: function newPendingTransactionFilter() 
 
 
     {
-      return this._transport.execute('eth_newPendingTransactionFilter');} }, { key: 'protocolVersion', value: function protocolVersion()
+      return this._transport.execute('eth_newPendingTransactionFilter');} }, { key: 'protocolVersion', value: function protocolVersion() 
 
 
     {
@@ -233,7 +274,7 @@ var Eth = function () {
 
 
     options) {
-      return this._transport.execute('eth_sendTransaction', options);} }, { key: 'sign', value: function sign()
+      return this._transport.execute('eth_sendTransaction', options);} }, { key: 'sign', value: function sign() 
 
 
     {
@@ -245,7 +286,7 @@ var Eth = function () {
 
 
     nonce, powHash, mixDigest) {
-      return this._transport.execute('eth_submitWork', nonce, powHash, mixDigest);} }, { key: 'syncing', value: function syncing()
+      return this._transport.execute('eth_submitWork', nonce, powHash, mixDigest);} }, { key: 'syncing', value: function syncing() 
 
 
     {
@@ -257,15 +298,15 @@ var Eth = function () {
 
 var Net = function () {
   function Net(transport) {babelHelpers.classCallCheck(this, Net);
-    this._transport = transport;}babelHelpers.createClass(Net, [{ key: 'listening', value: function listening()
+    this._transport = transport;}babelHelpers.createClass(Net, [{ key: 'listening', value: function listening() 
 
 
     {
-      return this._transport.execute('net_listening');} }, { key: 'peerCount', value: function peerCount()
+      return this._transport.execute('net_listening');} }, { key: 'peerCount', value: function peerCount() 
 
 
     {
-      return this._transport.execute('net_peerCount');} }, { key: 'version', value: function version()
+      return this._transport.execute('net_peerCount');} }, { key: 'version', value: function version() 
 
 
     {
@@ -273,7 +314,7 @@ var Net = function () {
 
 var Personal = function () {
   function Personal(transport) {babelHelpers.classCallCheck(this, Personal);
-    this._transport = transport;}babelHelpers.createClass(Personal, [{ key: 'listAccounts', value: function listAccounts()
+    this._transport = transport;}babelHelpers.createClass(Personal, [{ key: 'listAccounts', value: function listAccounts() 
 
 
     {
@@ -309,11 +350,11 @@ var Personal$1 = function () {
 
 
     options) {
-      return this._transport.execute('shh_newFilter', options);} }, { key: 'newGroup', value: function newGroup()
+      return this._transport.execute('shh_newFilter', options);} }, { key: 'newGroup', value: function newGroup() 
 
 
     {
-      return this._transport.execute('shh_newGroup');} }, { key: 'newIdentity', value: function newIdentity()
+      return this._transport.execute('shh_newGroup');} }, { key: 'newIdentity', value: function newIdentity() 
 
 
     {
@@ -325,7 +366,7 @@ var Personal$1 = function () {
 
 
     filterId) {
-      return this._transport.execute('shh_uninstallFilter', filterId);} }, { key: 'version', value: function version()
+      return this._transport.execute('shh_uninstallFilter', filterId);} }, { key: 'version', value: function version() 
 
 
     {
@@ -333,7 +374,7 @@ var Personal$1 = function () {
 
 var Web3 = function () {
   function Web3(transport) {babelHelpers.classCallCheck(this, Web3);
-    this._transport = transport;}babelHelpers.createClass(Web3, [{ key: 'clientVersion', value: function clientVersion()
+    this._transport = transport;}babelHelpers.createClass(Web3, [{ key: 'clientVersion', value: function clientVersion() 
 
 
     {
@@ -343,10 +384,7 @@ var Web3 = function () {
     hexStr) {
       return this._transport.execute('web3_sha3', hexStr);} }]);return Web3;}();
 
-function isFunction(test) {
-  return Object.prototype.toString.call(test) === '[object Function]';}
-
-var
+var 
 
 EthApi = function () {
   function EthApi(transport) {babelHelpers.classCallCheck(this, EthApi);
@@ -358,30 +396,32 @@ EthApi = function () {
     this._net = new Net(transport);
     this._personal = new Personal(transport);
     this._shh = new Personal$1(transport);
-    this._web3 = new Web3(transport);}babelHelpers.createClass(EthApi, [{ key: 'eth', get: function get()
-
-
-
-
+    this._web3 = new Web3(transport);}babelHelpers.createClass(EthApi, [{ key: 'eth', get: function get() 
 
 
     {
-      return this._eth;} }, { key: 'net', get: function get()
+      return this._eth;} }, { key: 'net', get: function get() 
 
 
     {
-      return this._net;} }, { key: 'personal', get: function get()
+      return this._net;} }, { key: 'personal', get: function get() 
 
 
     {
-      return this._personal;} }, { key: 'shh', get: function get()
+      return this._personal;} }, { key: 'shh', get: function get() 
 
 
     {
-      return this._shh;} }, { key: 'web3', get: function get()
+      return this._shh;} }, { key: 'web3', get: function get() 
 
 
     {
-      return this._web3;} }]);return EthApi;}();EthApi.Transports = { JsonRpc: JsonRpc };
+      return this._web3;} }]);return EthApi;}();EthApi.
+
+
+Contract = Contract;EthApi.
+
+Transports = { 
+  JsonRpc: JsonRpc };
 
 module.exports = EthApi;

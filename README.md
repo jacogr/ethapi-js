@@ -37,15 +37,18 @@ es6Promise.polyfill();
 
 ### making calls
 
+perform a call
 ```
-// perform a call
 ethapi.eth
   .coinbase()
   .then((coinbase) => {
     console.log(`The coinbase is ${coinbase}`);
   });
+```
 
-// multiple promises
+multiple promises
+
+```
 Promise
   .all([
     ethapi.eth.coinbase(),
@@ -54,13 +57,36 @@ Promise
   .then(([coinbase, listening]) => {
     // do stuff here
   });
+```
 
-// chaining promises
+chaining promises
+
+```
 ethapi.eth
   .newFilter({...})
   .then((filterId) => getFilterChanges(filterId))
   .then((changes) => {
     console.log(changes);
+  });
+```
+
+### contracts
+
+attach contract
+
+```
+const abi = [{ name: 'callMe', inputs: [{ type: 'bool', ...}, { type: 'string', ...}]}, ...abi...];
+const contract = new EthApi.Contract(ethapi, abi);
+```
+
+find & call a function
+
+```
+const funcs = contract.abi.functions.find((func) => func.name === 'callMe');
+contract
+  .call(funcs[0], { gas: 21000 }, [true, 'someString']) // or estimateGas or sendTransaction
+  .then((result) => {
+    console.log(`the result was ${result}`);
   });
 ```
 

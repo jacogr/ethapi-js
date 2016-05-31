@@ -93,7 +93,7 @@ function isInstanceOf(test, clazz) {
 var 
 
 Contract = function () {
-  function Contract(eth, abi) {babelHelpers.classCallCheck(this, Contract);
+  function Contract(eth, abi) {var _this = this;babelHelpers.classCallCheck(this, Contract);
     if (!isInstanceOf(eth, EthApi)) {
       throw new Error('EthApi needs to be provided to Contract instance');} else 
     if (!abi) {
@@ -101,24 +101,73 @@ Contract = function () {
 
 
     this._eth = eth;
-    this._abi = new EthAbi(abi);}babelHelpers.createClass(Contract, [{ key: 'at', set: function set(
+    this._abi = new EthAbi(abi);
+
+    this._constructors = this._abi.constructors.map(function (cons) {return _this._bindFunction(cons);});
+    this._functions = this._abi.functions.map(function (func) {return _this._bindFunction(func);});
+    this._events = this._abi.events.map(function (event) {return _this._bindEvent(event);});}babelHelpers.createClass(Contract, [{ key: 'at', value: function at(
 
 
-    at) {
-      this._at = at;
-      return this;}, get: function get() 
 
 
-    {
-      return this._at;} }, { key: 'eth', get: function get() 
 
 
-    {
-      return this._eth;} }, { key: 'abi', get: function get() 
 
 
-    {
-      return this._abi;} }]);return Contract;}();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    address) {
+      this._address = address;
+      return this;} }, { key: '_encodeOptions', value: function _encodeOptions(
+
+
+    func, options, values) {
+      var tokens = this._abi.encodeTokens(func.inputParamTypes(), values);
+
+      options.to = options.to || this._address;
+      options.data = '0x' + func.encodeCall(tokens);
+
+      return options;} }, { key: '_bindEvent', value: function _bindEvent(
+
+
+    event) {
+      return event;} }, { key: '_bindFunction', value: function _bindFunction(
+
+
+    func) {var _this2 = this;
+      func.call = function (options, values) {
+        return _this2._eth.eth.
+        call(_this2._encodeOptions(func, options, values)).
+        then(function (encoded) {return func.decodeOutput(encoded);});};
+
+
+      func.sendTransaction = function (options, values) {
+        return _this2._eth.eth.
+        sendTransaction(_this2._encodeOptions(func, options, values));};
+
+
+      func.estimateGas = function (options, values) {
+        return _this2._eth.eth.
+        estimateGas(_this2._encodeOptions(func, options, values));};
+
+
+      return func;} }, { key: 'address', get: function get() {return this._address;} }, { key: 'constructors', get: function get() {return this._constructors;} }, { key: 'events', get: function get() {return this._events;} }, { key: 'functions', get: function get() {return this._functions;} }, { key: 'eth', get: function get() {return this._eth;} }, { key: 'abi', get: function get() {return this._abi;} }]);return Contract;}();
 
 var Eth = function () {
   function Eth(transport) {babelHelpers.classCallCheck(this, Eth);
@@ -424,4 +473,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Tue May 31 11:35:43 UTC 2016 */
+module.exports = EthApi;/* Tue May 31 16:45:43 UTC 2016 */

@@ -154,7 +154,9 @@ Contract = function () {
       func.call = function (options, values) {
         return _this2._eth.eth.
         call(_this2._encodeOptions(func, options, values)).
-        then(function (encoded) {return func.decodeOutput(encoded);});};
+        then(function (encoded) {return func.decodeOutput(encoded);}).
+        then(function (tokens) {return tokens.map(function (token) {return token.value;});}).
+        then(function (returns) {return returns.length === 1 ? returns[0] : returns;});};
 
 
       func.sendTransaction = function (options, values) {
@@ -473,4 +475,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Tue May 31 16:45:43 UTC 2016 */
+module.exports = EthApi;/* Tue May 31 18:12:33 UTC 2016 */

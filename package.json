@@ -2,6 +2,7 @@
   "name": "ethapi-js",
   "version": "0.0.5",
   "main": "index.js",
+  "jsnext:main": "src/index.js",
   "author": "Jaco Greeff <jacogr@gmail.com>",
   "license": "MIT",
   "repository": {
@@ -47,6 +48,7 @@
   "dependencies": {
     "bignumber.js": "^2.3.0",
     "es6-promise": "^3.2.1",
+    "ethabi-js": "github:jacogr/ethabi-js#0.0.7",
     "isomorphic-fetch": "^2.2.1"
   }
 }

@@ -18,15 +18,21 @@ A thin, fast low-level Promise-based wrapper around the Eth APIs.
 ### initialisation
 
 ```
-// import the transport (currently only JSON RPC)
-import JsonRpc from 'ethapi-js/lib/transport/jsonRpc';
-
 // import the actual EthApi class
 import EthApi from 'ethapi-js';
 
 // do the setup
-const transport = new JsonRpc('127.0.0.1', 8545);
+const transport = new EthApi.Transports.JsonRpc('127.0.0.1', 8545);
 const ethapi = new EthApi(transport);
+```
+
+You will require native Promises and fetch, they can be utilised by
+
+```
+import 'isomorphic-fetch';
+
+import es6Promise from 'es6-promise';
+es6Promise.polyfill();
 ```
 
 ### making calls

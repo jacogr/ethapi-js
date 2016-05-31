@@ -1,5 +1,9 @@
 'use strict';
 
+function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
+
+var EthAbi = _interopDefault(require('ethabi-js'));
+
 var babelHelpers = {};
 
 babelHelpers.classCallCheck = function (instance, Constructor) {
@@ -78,6 +82,43 @@ JsonRpc = function () {
 
 
         return result.result;});} }]);return JsonRpc;}();
+
+function isFunction(test) {
+  return Object.prototype.toString.call(test) === '[object Function]';}
+
+
+function isInstanceOf(test, clazz) {
+  return test instanceof clazz;}
+
+var 
+
+Contract = function () {
+  function Contract(eth, abi) {babelHelpers.classCallCheck(this, Contract);
+    if (!isInstanceOf(eth, EthApi)) {
+      throw new Error('EthApi needs to be provided to Contract instance');} else 
+    if (!abi) {
+      throw new Error('Object ABI needs to be provided to Contract instance');}
+
+
+    this._eth = eth;
+    this._abi = new EthAbi(abi);}babelHelpers.createClass(Contract, [{ key: 'at', set: function set(
+
+
+    at) {
+      this._at = at;
+      return this;}, get: function get() 
+
+
+    {
+      return this._at;} }, { key: 'eth', get: function get() 
+
+
+    {
+      return this._eth;} }, { key: 'abi', get: function get() 
+
+
+    {
+      return this._abi;} }]);return Contract;}();
 
 var Eth = function () {
   function Eth(transport) {babelHelpers.classCallCheck(this, Eth);
@@ -343,9 +384,6 @@ var Web3 = function () {
     hexStr) {
       return this._transport.execute('web3_sha3', hexStr);} }]);return Web3;}();
 
-function isFunction(test) {
-  return Object.prototype.toString.call(test) === '[object Function]';}
-
 var 
 
 EthApi = function () {
@@ -359,10 +397,6 @@ EthApi = function () {
     this._personal = new Personal(transport);
     this._shh = new Personal$1(transport);
     this._web3 = new Web3(transport);}babelHelpers.createClass(EthApi, [{ key: 'eth', get: function get() 
-
-
-
-
 
 
     {
@@ -382,6 +416,12 @@ EthApi = function () {
 
 
     {
-      return this._web3;} }]);return EthApi;}();EthApi.Transports = { JsonRpc: JsonRpc };
+      return this._web3;} }]);return EthApi;}();EthApi.
+
+
+Contract = Contract;EthApi.
+
+Transports = { 
+  JsonRpc: JsonRpc };
 
 module.exports = EthApi;/* Tue May 31 11:35:43 UTC 2016 */

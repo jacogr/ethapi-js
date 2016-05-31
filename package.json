@@ -21,7 +21,7 @@
     "lint": "eslint --ignore-path .gitignore ./lib/",
     "testCoverage": "istanbul cover _mocha -- 'lib/**/*.spec.js'",
     "testOnce": "mocha 'lib/**/*.spec.js'",
-    "npmRelease": "release-it"
+    "publish": "./scripts/publish.sh"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
@@ -42,7 +42,6 @@
     "istanbul": "^1.0.0-alpha.2",
     "mocha": "^2.5.3",
     "nock": "^8.0.0",
-    "release-it": "^2.4.0",
     "rollup": "^0.26.3",
     "rollup-plugin-babel": "^2.4.0",
     "sinon": "^1.17.4",

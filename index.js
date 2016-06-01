@@ -171,6 +171,26 @@ Contract = function () {
 
       return func;} }, { key: 'address', get: function get() {return this._address;} }, { key: 'constructors', get: function get() {return this._constructors;} }, { key: 'events', get: function get() {return this._events;} }, { key: 'functions', get: function get() {return this._functions;} }, { key: 'eth', get: function get() {return this._eth;} }, { key: 'abi', get: function get() {return this._abi;} }]);return Contract;}();
 
+var Db = function () {
+  function Db(transport) {babelHelpers.classCallCheck(this, Db);
+    this._transport = transport;}babelHelpers.createClass(Db, [{ key: 'getHex', value: function getHex(
+
+
+    dbName, keyName) {
+      return this._transport.execute('db_getHex', dbName, keyName);} }, { key: 'getString', value: function getString(
+
+
+    dbName, keyName) {
+      return this._transport.execute('db_getString', dbName, keyName);} }, { key: 'putHex', value: function putHex(
+
+
+    dbName, keyName, hexData) {
+      return this._transport.execute('db_putHex', dbName, keyName, hexData);} }, { key: 'putString', value: function putString(
+
+
+    dbName, keyName, stringData) {
+      return this._transport.execute('db_putString', dbName, keyName, stringData);} }]);return Db;}();
+
 var Eth = function () {
   function Eth(transport) {babelHelpers.classCallCheck(this, Eth);
     this._transport = transport;}babelHelpers.createClass(Eth, [{ key: 'accounts', value: function accounts() 
@@ -205,7 +225,15 @@ var Eth = function () {
 
 
     options) {
-      return this._transport.execute('eth_estimateGas', options);} }, { key: 'gasPrice', value: function gasPrice() 
+      return this._transport.execute('eth_estimateGas', options);} }, { key: 'fetchQueuedTransactions', value: function fetchQueuedTransactions() 
+
+
+    {
+      return this._transport.execute('eth_fetchQueuedTransactions');} }, { key: 'flush', value: function flush() 
+
+
+    {
+      return this._transport.execute('eth_flush');} }, { key: 'gasPrice', value: function gasPrice() 
 
 
     {
@@ -241,15 +269,27 @@ var Eth = function () {
 
 
     filterId) {
-      return this._transport.execute('eth_getFilterChanges', filterId);} }, { key: 'getFilterLogs', value: function getFilterLogs(
+      return this._transport.execute('eth_getFilterChanges', filterId);} }, { key: 'getFilterChangesEx', value: function getFilterChangesEx(
 
 
     filterId) {
-      return this._transport.execute('eth_getFilterLogs', filterId);} }, { key: 'getLogs', value: function getLogs(
+      return this._transport.execute('eth_getFilterChangesEx', filterId);} }, { key: 'getFilterLogs', value: function getFilterLogs(
+
+
+    filterId) {
+      return this._transport.execute('eth_getFilterLogs', filterId);} }, { key: 'getFilterLogsEx', value: function getFilterLogsEx(
+
+
+    filterId) {
+      return this._transport.execute('eth_getFilterLogsEx', filterId);} }, { key: 'getLogs', value: function getLogs(
 
 
     options) {
-      return this._transport.execute('eth_getLogs', options);} }, { key: 'getStorageAt', value: function getStorageAt(
+      return this._transport.execute('eth_getLogs', options);} }, { key: 'getLogsEx', value: function getLogsEx(
+
+
+    options) {
+      return this._transport.execute('eth_getLogsEx', options);} }, { key: 'getStorageAt', value: function getStorageAt(
 
 
     address) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];var blockNumber = arguments.length <= 2 || arguments[2] === undefined ? 'latest' : arguments[2];
@@ -297,7 +337,11 @@ var Eth = function () {
 
 
     {
-      return this._transport.execute('eth_hashrate');} }, { key: 'mining', value: function mining() 
+      return this._transport.execute('eth_hashrate');} }, { key: 'inspectTransaction', value: function inspectTransaction() 
+
+
+    {
+      return this._transport.execute('eth_inspectTransaction');} }, { key: 'mining', value: function mining() 
 
 
     {
@@ -309,15 +353,31 @@ var Eth = function () {
 
 
     options) {
-      return this._transport.execute('eth_newFilter', options);} }, { key: 'newPendingTransactionFilter', value: function newPendingTransactionFilter() 
+      return this._transport.execute('eth_newFilter', options);} }, { key: 'newFilterEx', value: function newFilterEx(
+
+
+    options) {
+      return this._transport.execute('eth_newFilterEx', options);} }, { key: 'newPendingTransactionFilter', value: function newPendingTransactionFilter() 
 
 
     {
-      return this._transport.execute('eth_newPendingTransactionFilter');} }, { key: 'protocolVersion', value: function protocolVersion() 
+      return this._transport.execute('eth_newPendingTransactionFilter');} }, { key: 'notePassword', value: function notePassword() 
 
 
     {
-      return this._transport.execute('eth_protocolVersion');} }, { key: 'sendRawTransaction', value: function sendRawTransaction(
+      return this._transport.execute('eth_notePassword');} }, { key: 'pendingTransactions', value: function pendingTransactions() 
+
+
+    {
+      return this._transport.execute('eth_pendingTransactions');} }, { key: 'protocolVersion', value: function protocolVersion() 
+
+
+    {
+      return this._transport.execute('eth_protocolVersion');} }, { key: 'register', value: function register() 
+
+
+    {
+      return this._transport.execute('eth_register');} }, { key: 'sendRawTransaction', value: function sendRawTransaction(
 
 
     data) {
@@ -329,7 +389,11 @@ var Eth = function () {
 
 
     {
-      return this._transport.execute('eth_sign');} }, { key: 'submitHashrate', value: function submitHashrate(
+      return this._transport.execute('eth_sign');} }, { key: 'signTransaction', value: function signTransaction() 
+
+
+    {
+      return this._transport.execute('eth_signTransaction');} }, { key: 'submitHashrate', value: function submitHashrate(
 
 
     hashrate, clientId) {
@@ -345,7 +409,71 @@ var Eth = function () {
 
 
     filterId) {
-      return this._transport.execute('eth_uninstallFilter', filterId);} }]);return Eth;}();
+      return this._transport.execute('eth_uninstallFilter', filterId);} }, { key: 'unregister', value: function unregister() 
+
+
+    {
+      return this._transport.execute('eth_unregister');} }]);return Eth;}();
+
+var Ethcore = function () {
+  function Ethcore(transport) {babelHelpers.classCallCheck(this, Ethcore);
+    this._transport = transport;}babelHelpers.createClass(Ethcore, [{ key: 'extraData', value: function extraData() 
+
+
+    {
+      return this._transport.execute('ethcore_extraData');} }, { key: 'gasFloorTarget', value: function gasFloorTarget() 
+
+
+    {
+      return this._transport.execute('ethcore_gasFloorTarget');} }, { key: 'minGasPrice', value: function minGasPrice() 
+
+
+    {
+      return this._transport.execute('ethcore_minGasPrice');} }, { key: 'netChain', value: function netChain() 
+
+
+    {
+      return this._transport.execute('ethcore_netChain');} }, { key: 'netMaxPeers', value: function netMaxPeers() 
+
+
+    {
+      return this._transport.execute('ethcore_netMaxPeers');} }, { key: 'netPort', value: function netPort() 
+
+
+    {
+      return this._transport.execute('ethcore_netPort');} }, { key: 'nodeName', value: function nodeName() 
+
+
+    {
+      return this._transport.execute('ethcore_nodeName');} }, { key: 'setAuthor', value: function setAuthor(
+
+
+    address) {
+      return this._transport.execute('ethcore_setAuthor');} }, { key: 'setExtraData', value: function setExtraData(
+
+
+    data) {
+      return this._transport.execute('ethcore_setExtraData', data);} }, { key: 'setGasFloorTarget', value: function setGasFloorTarget(
+
+
+    quantity) {
+      return this._transport.execute('ethcore_setGasFloorTarget');} }, { key: 'setMinGasPrice', value: function setMinGasPrice(
+
+
+    quantity) {
+      return this._transport.execute('ethcore_setMinGasPrice', quantity);} }, { key: 'setTransactionsLimit', value: function setTransactionsLimit(
+
+
+    quantity) {
+      return this._transport.execute('ethcore_setTransactionsLimit', quantity);} }, { key: 'transactionsLimit', value: function transactionsLimit() 
+
+
+    {
+      return this._transport.execute('ethcore_transactionsLimit');} }, { key: 'rpcSettings', value: function rpcSettings() 
+
+
+    {
+      return this._transport.execute('ethcore_rpcSettings');} }]);return Ethcore;}();
 
 var Net = function () {
   function Net(transport) {babelHelpers.classCallCheck(this, Net);
@@ -373,7 +501,11 @@ var Personal = function () {
 
 
     password) {
-      return this._transport.execute('personal_newAccount', password);} }, { key: 'unlockAccount', value: function unlockAccount(
+      return this._transport.execute('personal_newAccount', password);} }, { key: 'signAndSendTransaction', value: function signAndSendTransaction(
+
+
+    txObject, password) {
+      return this._transport.execute('personal_signAndSendTransaction', txObject, password);} }, { key: 'unlockAccount', value: function unlockAccount(
 
 
     account, password) {var duration = arguments.length <= 2 || arguments[2] === undefined ? 5 : arguments[2];
@@ -423,6 +555,26 @@ var Personal$1 = function () {
     {
       return this._transport.execute('shh_version');} }]);return Personal;}();
 
+var Trace = function () {
+  function Trace(transport) {babelHelpers.classCallCheck(this, Trace);
+    this._transport = transport;}babelHelpers.createClass(Trace, [{ key: 'filter', value: function filter(
+
+
+    filterObj) {
+      return this._transport.execute('trace_filter', filterObj);} }, { key: 'get', value: function get(
+
+
+    txHash, position) {
+      return this._transport.execute('trace_get', txHash, position);} }, { key: 'transaction', value: function transaction(
+
+
+    txHash) {
+      return this._transport.execute('trace_transaction', txHash);} }, { key: 'block', value: function block() 
+
+
+    {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];
+      return this._transport.execute('trace_block', blockNumber);} }]);return Trace;}();
+
 var Web3 = function () {
   function Web3(transport) {babelHelpers.classCallCheck(this, Web3);
     this._transport = transport;}babelHelpers.createClass(Web3, [{ key: 'clientVersion', value: function clientVersion() 
@@ -443,15 +595,26 @@ EthApi = function () {
       throw new Error('EthAbi needs transport with execute() function defined');}
 
 
+    this._db = new Db(transport);
     this._eth = new Eth(transport);
+    this._ethcore = new Ethcore(transport);
     this._net = new Net(transport);
     this._personal = new Personal(transport);
     this._shh = new Personal$1(transport);
-    this._web3 = new Web3(transport);}babelHelpers.createClass(EthApi, [{ key: 'eth', get: function get() 
+    this._trace = new Trace(transport);
+    this._web3 = new Web3(transport);}babelHelpers.createClass(EthApi, [{ key: 'db', get: function get() 
 
 
     {
-      return this._eth;} }, { key: 'net', get: function get() 
+      return this._db;} }, { key: 'eth', get: function get() 
+
+
+    {
+      return this._eth;} }, { key: 'ethcore', get: function get() 
+
+
+    {
+      return this._ethcore;} }, { key: 'net', get: function get() 
 
 
     {
@@ -463,7 +626,11 @@ EthApi = function () {
 
 
     {
-      return this._shh;} }, { key: 'web3', get: function get() 
+      return this._shh;} }, { key: 'trace', get: function get() 
+
+
+    {
+      return this._trace;} }, { key: 'web3', get: function get() 
 
 
     {
@@ -475,4 +642,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Tue May 31 18:12:33 UTC 2016 */
+module.exports = EthApi;/* Wed Jun  1 08:37:12 UTC 2016 */

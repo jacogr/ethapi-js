@@ -165,6 +165,7 @@ The interfaces maps through to the RPC `personal_<interface>` definition.
 
 - `listAccounts()` - list all the available accounts
 - `newAccount(password)` - creates a new account
+- `signAndSendTransaction(txObject, password)` - sends and signs a transaction given account passphrase
 - `unlockAccount(account, password, duration = 5)` - unlocks the account
 
 ### ethapi.shh.<...>

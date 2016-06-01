@@ -100,8 +100,8 @@ These are deprecated and may not be available in all clients into the future
 
 - `getHex(dbName, keyName)` - retrieves a stored data value from the database
 - `getString(dbName, keyName)` - retrieves a stored string from the database
-- `putHex(dbName, keyName, dataHex)` - stores a data value in the local database
-- `putString(dbName, keyName, dataString)` - stores a string in the local database
+- `putHex(dbName, keyName, hexData)` - stores a data value in the local database
+- `putString(dbName, keyName, stringData)` - stores a string in the local database
 
 ### ethapi.eth.<...>
 

@@ -90,6 +90,18 @@ contract.functions
   });
 ```
 
+parse events from transaction receipt
+
+```
+contract
+  .parseTransactionEvents(txReceipt)
+  .then((receipt) => {
+    receipt.logs.forEach((log) => {
+      console.log('log parameters', log.params);
+    });
+  });
+```
+
 ## apis
 
 For a list of the exposed APIs, along with their parameters, the following exist. These implement the calls as listed on the official [JSON Ethereum RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) definition.

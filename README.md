@@ -17,7 +17,7 @@ A thin, fast low-level Promise-based wrapper around the Eth APIs.
 
 ### initialisation
 
-```
+```javascript
 // import the actual EthApi class
 import EthApi from 'ethapi-js';
 
@@ -26,9 +26,9 @@ const transport = new EthApi.Transports.JsonRpc('127.0.0.1', 8545);
 const ethapi = new EthApi(transport);
 ```
 
-You will require native Promises and fetch, they can be utilised by
+You will require native Promises and fetch support (latest browsers only), they can be utilised by
 
-```
+```javascript
 import 'isomorphic-fetch';
 
 import es6Promise from 'es6-promise';
@@ -38,7 +38,8 @@ es6Promise.polyfill();
 ### making calls
 
 perform a call
-```
+
+```javascript
 ethapi.eth
   .coinbase()
   .then((coinbase) => {
@@ -48,7 +49,7 @@ ethapi.eth
 
 multiple promises
 
-```
+```javascript
 Promise
   .all([
     ethapi.eth.coinbase(),
@@ -61,7 +62,7 @@ Promise
 
 chaining promises
 
-```
+```javascript
 ethapi.eth
   .newFilter({...})
   .then((filterId) => getFilterChanges(filterId))
@@ -74,14 +75,14 @@ ethapi.eth
 
 attach contract
 
-```
+```javascript
 const abi = [{ name: 'callMe', inputs: [{ type: 'bool', ...}, { type: 'string', ...}]}, ...abi...];
 const contract = new EthApi.Contract(ethapi, abi);
 ```
 
 find & call a function
 
-```
+```javascript
 contract.functions
   .find((func) => func.name === 'callMe')
   .call({ gas: 21000 }, [true, 'someString']) // or estimateGas or sendTransaction
@@ -92,7 +93,7 @@ contract.functions
 
 parse events from transaction receipt
 
-```
+```javascript
 contract
   .parseTransactionEvents(txReceipt)
   .then((receipt) => {

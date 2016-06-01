@@ -65,7 +65,7 @@ chaining promises
 ```javascript
 ethapi.eth
   .newFilter({...})
-  .then((filterId) => getFilterChanges(filterId))
+  .then((filterId) => ethapi.eth.getFilterChanges(filterId))
   .then((changes) => {
     console.log(changes);
   });

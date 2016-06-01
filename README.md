@@ -96,7 +96,7 @@ For a list of the exposed APIs, along with their parameters, the following exist
 
 ### ethapi.db.<...>
 
-These are deprecated and may not be available in all clients into the future
+The interfaces maps through to the RPC `db_<interface>` definition. These are deprecated and may not be available in all clients into the future
 
 - `getHex(dbName, keyName)` - retrieves a stored data value from the database
 - `getString(dbName, keyName)` - retrieves a stored string from the database
@@ -105,7 +105,7 @@ These are deprecated and may not be available in all clients into the future
 
 ### ethapi.eth.<...>
 
-In most cases, the interfaces maps through to the RPC `eth_<interface>` definition.
+The interfaces maps through to the RPC `eth_<interface>` definition.
 
 - `accounts()` - returns a list of accounts associated with the current running instance
 - `blockNumber()` - returns the current blockNumber
@@ -153,17 +153,23 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 
 ### ethapi.net.<...>
 
+The interfaces maps through to the RPC `net_<interface>` definition.
+
 - `listening()` - returns the listening status of the network
 - `peerCount()` - returns the number of connected peers
 - `version()` - returns the network version
 
 ### ethapi.personal.<...>
 
+The interfaces maps through to the RPC `personal_<interface>` definition.
+
 - `listAccounts()` - list all the available accounts
 - `newAccount(password)` - creates a new account
 - `unlockAccount(account, password, duration = 5)` - unlocks the account
 
 ### ethapi.shh.<...>
+
+The interfaces maps through to the RPC `shh_<interface>` definition.
 
 - `addToGroup(identity)`
 - `getFilterChanges(filterId)`
@@ -180,12 +186,16 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 
 ### ethapi.trace.<...>
 
+The interfaces maps through to the RPC `trace_<interface>` definition.
+
 - `filter(filterObj)` - returns traces matching given filter
 - `get(txHash, position)` - returns trace at given position
 - `transaction(txHash)` - returns all traces of given transaction
 - `block(blockNumber = 'latest')` - returns traces created at given block
 
 ### ethapi.web3.<...>
+
+The interfaces maps through to the RPC `web3_<interface>` definition.
 
 - `clientVersion()` - returns the version of the RPC client
 - `sha3(hexStr)` - returns a keccak256 of the hexStr input

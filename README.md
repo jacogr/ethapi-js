@@ -178,6 +178,13 @@ In most cases, the interfaces maps through to the RPC `eth_<interface>` definiti
 
 *TODO* complete the descriptions where not available
 
+### ethapi.trace.<...>
+
+- `filter(filterObj)` - returns traces matching given filter
+- `get(txHash, position)` - returns trace at given position
+- `transaction(txHash)` - returns all traces of given transaction
+- `block(blockNumber = 'latest')` - returns traces created at given block
+
 ### ethapi.web3.<...>
 
 - `clientVersion()` - returns the version of the RPC client

@@ -94,6 +94,15 @@ contract.functions
 
 For a list of the exposed APIs, along with their parameters, the following exist. These implement the calls as listed on the official [JSON Ethereum RPC](https://github.com/ethereum/wiki/wiki/JSON-RPC) definition.
 
+### ethapi.db.<...>
+
+These are deprecated and may not be available in all clients into the future
+
+- `getHex(dbName, keyName)` - retrieves a stored data value from the database
+- `getString(dbName, keyName)` - retrieves a stored string from the database
+- `putHex(dbName, keyName, dataHex)` - stores a data value in the local database
+- `putString(dbName, keyName, dataString)` - stores a string in the local database
+
 ### ethapi.eth.<...>
 
 In most cases, the interfaces maps through to the RPC `eth_<interface>` definition.

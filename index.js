@@ -612,7 +612,7 @@ var
 EthApi = function () {
   function EthApi(transport) {babelHelpers.classCallCheck(this, EthApi);
     if (!transport || !isFunction(transport.execute)) {
-      throw new Error('EthAbi needs transport with execute() function defined');}
+      throw new Error('EthApi needs transport with execute() function defined');}
 
 
     this._db = new Db(transport);
@@ -662,4 +662,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Wed Jun  1 13:02:03 UTC 2016 */
+module.exports = EthApi;/* Wed Jun  1 13:19:18 UTC 2016 */

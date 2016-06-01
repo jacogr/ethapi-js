@@ -151,6 +151,25 @@ The interfaces maps through to the RPC `eth_<interface>` definition.
 
 *TODO* complete the descriptions where not available
 
+### ethapi.ethcore.<...>
+
+The interfaces maps through to the RPC `ethcore_<interface>` definition, extensions done by Ethcore on the Parity client.
+
+- `extraData()` - returns currently set extra data
+- `gasFloorTarget()` - returns current target for gas floor
+- `minGasPrice()` - returns currently set minimal gas price
+- `netChain()` - returns the name of the connected chain
+- `netMaxPeers()` - returns maximal number of peers
+- `netPort()` - returns network port the node is listening on
+- `nodeName()` - returns node name (identity)
+- `setAuthor(address)` - changes author (coinbase) for mined blocks
+- `setExtraData(data)` - changes extra data for newly mined blocks
+- `setGasFloorTarget(quantity)` - changes current gas floor target
+- `setMinGasPrice(quantity)` - changes minimal gas price for transaction to be accepted to the queue
+- `setTransactionsLimit(quantity)` - changes limit for transactions in queue
+- `transactionsLimit()` - returns limit for transactions in queue
+- `rpcSettings()` - returns basic settings of rpc (enabled, port, interface)
+
 ### ethapi.net.<...>
 
 The interfaces maps through to the RPC `net_<interface>` definition.

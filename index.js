@@ -105,7 +105,7 @@ Contract = function () {
 
     this._constructors = this._abi.constructors.map(function (cons) {return _this._bindFunction(cons);});
     this._functions = this._abi.functions.map(function (func) {return _this._bindFunction(func);});
-    this._events = this._abi.events.map(function (event) {return _this._bindEvent(event);});}babelHelpers.createClass(Contract, [{ key: 'at', value: function at(
+    this._events = this._abi.events;}babelHelpers.createClass(Contract, [{ key: 'at', value: function at(
 
 
 
@@ -134,7 +134,31 @@ Contract = function () {
 
     address) {
       this._address = address;
-      return this;} }, { key: '_encodeOptions', value: function _encodeOptions(
+      return this;} }, { key: 'parseTransactionEvents', value: function parseTransactionEvents(
+
+
+    receipt) {var _this2 = this;
+      receipt.logs = receipt.logs.map(function (log) {
+        var signature = log.topics[0].substr(2);
+        var event = _this2.events.find(function (evt) {return evt.signature === signature;});
+
+        if (!event) {
+          throw new Error('Unable to find event matching signature ' + signature);}
+
+
+        var decoded = event.decodeLog(log.topics, log.data);
+
+        log.params = {};
+        log.address = decoded.address;
+
+        decoded.params.forEach(function (param) {
+          log.params[param.name] = param.token.value;});
+
+
+        return log;});
+
+
+      return receipt;} }, { key: '_encodeOptions', value: function _encodeOptions(
 
 
     func, options, values) {
@@ -143,30 +167,26 @@ Contract = function () {
       options.to = options.to || this._address;
       options.data = '0x' + func.encodeCall(tokens);
 
-      return options;} }, { key: '_bindEvent', value: function _bindEvent(
+      return options;} }, { key: '_bindFunction', value: function _bindFunction(
 
 
-    event) {
-      return event;} }, { key: '_bindFunction', value: function _bindFunction(
-
-
-    func) {var _this2 = this;
+    func) {var _this3 = this;
       func.call = function (options, values) {
-        return _this2._eth.eth.
-        call(_this2._encodeOptions(func, options, values)).
+        return _this3._eth.eth.
+        call(_this3._encodeOptions(func, options, values)).
         then(function (encoded) {return func.decodeOutput(encoded);}).
         then(function (tokens) {return tokens.map(function (token) {return token.value;});}).
         then(function (returns) {return returns.length === 1 ? returns[0] : returns;});};
 
 
       func.sendTransaction = function (options, values) {
-        return _this2._eth.eth.
-        sendTransaction(_this2._encodeOptions(func, options, values));};
+        return _this3._eth.eth.
+        sendTransaction(_this3._encodeOptions(func, options, values));};
 
 
       func.estimateGas = function (options, values) {
-        return _this2._eth.eth.
-        estimateGas(_this2._encodeOptions(func, options, values));};
+        return _this3._eth.eth.
+        estimateGas(_this3._encodeOptions(func, options, values));};
 
 
       return func;} }, { key: 'address', get: function get() {return this._address;} }, { key: 'constructors', get: function get() {return this._constructors;} }, { key: 'events', get: function get() {return this._events;} }, { key: 'functions', get: function get() {return this._functions;} }, { key: 'eth', get: function get() {return this._eth;} }, { key: 'abi', get: function get() {return this._abi;} }]);return Contract;}();
@@ -642,4 +662,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Wed Jun  1 09:06:37 UTC 2016 */
+module.exports = EthApi;/* Wed Jun  1 12:10:06 UTC 2016 */

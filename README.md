@@ -113,6 +113,8 @@ The interfaces maps through to the RPC `eth_<interface>` definition.
 - `coinbase()` - returns the current coinbase (base account) for the running instance
 - `compile[LLL|Serpent|Solidity](code)` - compiles the supplied code using the required compiler
 - `estimateGas(options)` - performs a *fake* call using the options, returning the used gas
+- `fetchQueuedTransactions()`
+- `flush()`
 - `gasPrice()` - returns the current gas price
 - `getBalance(address, blockNumber = 'latest')` - returns the current address balance as at blockNumber
 - `getBlockByHash(hash, full = false)` - gets the block by the specified hash
@@ -122,8 +124,11 @@ The interfaces maps through to the RPC `eth_<interface>` definition.
 - `getCode(address, blockNumber = 'latest')` - get the deployed code at address
 - `getCompilers()` - get a list of the available compilers
 - `getFilterChanges(filterId)` - returns the changes to a specified filterId
+- `getFilterChangesEx(filterId)`
 - `getFilterLogs(filterId)` - returns the logs for a specified filterId
+- `getFilterLogsEx(filterId)`
 - `getLogs(options)` - returns logs
+- `getLogsEx(options)`
 - `getStorageAt(address, index = 0, blockNumber = 'latest')` - retrieve the store at address
 - `getTransactionByBlockHashAndIndex(hash, index = 0)`
 - `getTransactionByBlockNumberAndIndex(blockNumber = 'latest', index = 0)`
@@ -136,18 +141,25 @@ The interfaces maps through to the RPC `eth_<interface>` definition.
 - `getUncleCountByBlockNumber(blockNumber = 'latest')`
 - `getWork()`
 - `hashrate()`
+- `inspectTransaction()`
 - `mining()`
 - `newBlockFilter()`
 - `newFilter(options)`
+- `newFilterEx(options)`
+- `notePassword()`
 - `newPendingTransactionFilter()`
+- `pendingTransactions()`
 - `protocolVersion()`
+- `register()`
 - `sendRawTransaction(data)`
 - `sendTransaction(options)`
 - `sign()`
+- `signTransaction()`
 - `submitHashrate(hashrate, clientId)`
 - `submitWork(nonce, powHash, mixDigest)`
 - `syncing()`
 - `uninstallFilter(filterId)`
+- `unregister()`
 
 *TODO* complete the descriptions where not available
 

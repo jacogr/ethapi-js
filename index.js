@@ -74,7 +74,7 @@ JsonRpc = function () {
       then(function (response) {
         if (response.status !== 200) {
           if (_this._debug) {
-            console.error('   ', method + '(' + params + ') throws', response.status, response.statusText);}
+            console.error('   ', method + '(' + params + ') =', response.status, response.statusText);}
 
 
           throw new Error(response.status + ': ' + response.statusText);}
@@ -85,7 +85,7 @@ JsonRpc = function () {
       then(function (result) {
         if (result.error) {
           if (_this._debug) {
-            console.error('   ', method + '(' + params + ') =', result);}
+            console.error('   ', method + '(' + params + ') =', result.error.code, result.error.message);}
 
 
           throw new Error(result.error.code + ': ' + result.error.message);}
@@ -236,8 +236,18 @@ var Db = function () {
     dbName, keyName, stringData) {
       return this._transport.execute('db_putString', dbName, keyName, stringData);} }]);return Db;}();
 
+function fromAddress(address) {
+  // TODO: address conversion to upper-lower
+  return address;}
+
+
 function fromNumber(number) {
   return new BigNumber(number || 0);}
+
+
+function toAddress(address) {
+  // TODO: address validation if we have upper-lower addresses
+  return toHex((address || '').toLowerCase());}
 
 
 function toBlockNumber(blockNumber) {
@@ -277,7 +287,8 @@ Eth = function () {
 
     {
       return this._transport.
-      execute('eth_accounts');} }, { key: 'blockNumber', value: function blockNumber() 
+      execute('eth_accounts').
+      then(function (accounts) {return (accounts || []).map(fromAddress);});} }, { key: 'blockNumber', value: function blockNumber() 
 
 
     {
@@ -293,7 +304,8 @@ Eth = function () {
 
     {
       return this._transport.
-      execute('eth_coinbase');} }, { key: 'compileLLL', value: function compileLLL(
+      execute('eth_coinbase').
+      then(fromAddress);} }, { key: 'compileLLL', value: function compileLLL(
 
 
     code) {
@@ -335,7 +347,7 @@ Eth = function () {
 
     address) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
       return this._transport.
-      execute('eth_getBalance', toHex(address), toBlockNumber(blockNumber)).
+      execute('eth_getBalance', toAddress(address), toBlockNumber(blockNumber)).
       then(fromNumber);} }, { key: 'getBlockByHash', value: function getBlockByHash(
 
 
@@ -361,7 +373,7 @@ Eth = function () {
 
     address) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
       return this._transport.
-      execute('eth_getCode', toHex(address), toBlockNumber(blockNumber));} }, { key: 'getCompilers', value: function getCompilers() 
+      execute('eth_getCode', toAddress(address), toBlockNumber(blockNumber));} }, { key: 'getCompilers', value: function getCompilers() 
 
 
     {
@@ -401,7 +413,7 @@ Eth = function () {
 
     address) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];var blockNumber = arguments.length <= 2 || arguments[2] === undefined ? 'latest' : arguments[2];
       return this._transport.
-      execute('eth_getStorageAt', toHex(address), toNumber(index), toBlockNumber(blockNumber));} }, { key: 'getTransactionByBlockHashAndIndex', value: function getTransactionByBlockHashAndIndex(
+      execute('eth_getStorageAt', toAddress(address), toNumber(index), toBlockNumber(blockNumber));} }, { key: 'getTransactionByBlockHashAndIndex', value: function getTransactionByBlockHashAndIndex(
 
 
     hash) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
@@ -421,7 +433,7 @@ Eth = function () {
 
     address) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
       return this._transport.
-      execute('eth_getTransactionCount', toHex(address), toBlockNumber(blockNumber));} }, { key: 'getTransactionReceipt', value: function getTransactionReceipt(
+      execute('eth_getTransactionCount', toAddress(address), toBlockNumber(blockNumber));} }, { key: 'getTransactionReceipt', value: function getTransactionReceipt(
 
 
     txhash) {
@@ -629,25 +641,33 @@ var Net = function () {
     {
       return this._transport.execute('net_version');} }]);return Net;}();
 
-var Personal = function () {
+// eslint-disable-line no-duplicate-imports
+var 
+Personal = function () {
   function Personal(transport) {babelHelpers.classCallCheck(this, Personal);
     this._transport = transport;}babelHelpers.createClass(Personal, [{ key: 'listAccounts', value: function listAccounts() 
 
 
     {
-      return this._transport.execute('personal_listAccounts');} }, { key: 'newAccount', value: function newAccount(
+      return this._transport.
+      execute('personal_listAccounts').
+      then(function (accounts) {return (accounts || []).map(fromAddress);});} }, { key: 'newAccount', value: function newAccount(
 
 
     password) {
-      return this._transport.execute('personal_newAccount', password);} }, { key: 'signAndSendTransaction', value: function signAndSendTransaction(
+      return this._transport.
+      execute('personal_newAccount', password).
+      then(fromAddress);} }, { key: 'signAndSendTransaction', value: function signAndSendTransaction(
 
 
     txObject, password) {
-      return this._transport.execute('personal_signAndSendTransaction', txObject, password);} }, { key: 'unlockAccount', value: function unlockAccount(
+      return this._transport.
+      execute('personal_signAndSendTransaction', txObject, password);} }, { key: 'unlockAccount', value: function unlockAccount(
 
 
     account, password) {var duration = arguments.length <= 2 || arguments[2] === undefined ? 5 : arguments[2];
-      return this._transport.execute('personal_unlockAccount', account, password, duration);} }]);return Personal;}();
+      return this._transport.
+      execute('personal_unlockAccount', toAddress(account), password, toNumber(duration));} }]);return Personal;}();
 
 var Personal$1 = function () {
   function Personal(transport) {babelHelpers.classCallCheck(this, Personal);
@@ -780,4 +800,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Thu Jun  2 16:02:06 UTC 2016 */
+module.exports = EthApi;/* Thu Jun  2 16:45:33 UTC 2016 */

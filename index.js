@@ -76,7 +76,7 @@ JsonRpc = function () {
             console.error('   ', method + '(' + params + ') throws', response.status, response.statusText);}
 
 
-          throw new Error(response.statusText);}
+          throw new Error(response.status + ': ' + response.statusText);}
 
 
         return response.json();}).
@@ -87,7 +87,7 @@ JsonRpc = function () {
             console.error('   ', method + '(' + params + ') =', result);}
 
 
-          throw new Error(result.error);}
+          throw new Error(result.error.code + ': ' + result.error.message);}
 
 
         if (_this._debug) {
@@ -680,4 +680,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Thu Jun  2 09:04:41 UTC 2016 */
+module.exports = EthApi;/* Thu Jun  2 09:40:58 UTC 2016 */

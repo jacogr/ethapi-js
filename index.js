@@ -54,6 +54,10 @@ JsonRpc = function () {
     method, params) {
       var json = this._encodeBody(method, params);
 
+      if (this._debug) {
+        console.log('>', json);}
+
+
       return { 
         method: 'POST', 
         headers: { 
@@ -74,7 +78,7 @@ JsonRpc = function () {
       then(function (response) {
         if (response.status !== 200) {
           if (_this._debug) {
-            console.error('   ', method + '(' + params + ') =', response.status, response.statusText);}
+            console.error('<', JSON.stringify({ status: response.status, statusText: response.statusText }));}
 
 
           throw new Error(response.status + ': ' + response.statusText);}
@@ -85,14 +89,14 @@ JsonRpc = function () {
       then(function (result) {
         if (result.error) {
           if (_this._debug) {
-            console.error('   ', method + '(' + params + ') =', result.error.code, result.error.message);}
+            console.error('<', JSON.stringify(result));}
 
 
           throw new Error(result.error.code + ': ' + result.error.message);}
 
 
         if (_this._debug) {
-          console.log('   ', method + '(' + params + ') =', result.result);}
+          console.log('<', JSON.stringify(result));}
 
 
         return result.result;});} }, { key: 'setDebug', value: function setDebug(
@@ -844,4 +848,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Thu Jun  2 17:27:43 UTC 2016 */
+module.exports = EthApi;/* Thu Jun  2 17:49:46 UTC 2016 */

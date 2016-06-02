@@ -37,7 +37,8 @@ JsonRpc = function () {
   function JsonRpc(host, port) {babelHelpers.classCallCheck(this, JsonRpc);
     this._host = host;
     this._port = port;
-    this._id = 1;}babelHelpers.createClass(JsonRpc, [{ key: '_encodeBody', value: function _encodeBody(
+    this._id = 1;
+    this._debug = false;}babelHelpers.createClass(JsonRpc, [{ key: '_encodeBody', value: function _encodeBody(
 
 
     method, params) {
@@ -67,10 +68,14 @@ JsonRpc = function () {
       return 'http://' + this._host + ':' + this._port + '/';} }, { key: 'execute', value: function execute(
 
 
-    method) {for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {params[_key - 1] = arguments[_key];}
+    method) {var _this = this;for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {params[_key - 1] = arguments[_key];}
       return fetch(this._getEndpoint(), this._encodeOptions(method, params)).
       then(function (response) {
         if (response.status !== 200) {
+          if (_this._debug) {
+            console.error('   ', method + '(' + params + ') throws', response.status, response.statusText);}
+
+
           throw new Error(response.statusText);}
 
 
@@ -78,10 +83,23 @@ JsonRpc = function () {
 
       then(function (result) {
         if (result.error) {
+          if (_this._debug) {
+            console.error('   ', method + '(' + params + ') =', result);}
+
+
           throw new Error(result.error);}
 
 
-        return result.result;});} }]);return JsonRpc;}();
+        if (_this._debug) {
+          console.log('   ', method + '(' + params + ') =', result.result);}
+
+
+        return result.result;});} }, { key: 'setDebug', value: function setDebug(
+
+
+
+    flag) {
+      this._debug = flag;} }]);return JsonRpc;}();
 
 function isFunction(test) {
   return Object.prototype.toString.call(test) === '[object Function]';}
@@ -662,4 +680,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Wed Jun  1 14:45:12 UTC 2016 */
+module.exports = EthApi;/* Thu Jun  2 09:04:41 UTC 2016 */

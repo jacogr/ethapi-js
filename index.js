@@ -197,14 +197,16 @@ Contract = function () {
         then(function (returns) {return returns.length === 1 ? returns[0] : returns;});};
 
 
-      func.sendTransaction = function (options, values) {
-        return _this3._eth.eth.
-        sendTransaction(_this3._encodeOptions(func, options, values));};
+      if (!func.constant) {
+        func.sendTransaction = function (options, values) {
+          return _this3._eth.eth.
+          sendTransaction(_this3._encodeOptions(func, options, values));};
 
 
-      func.estimateGas = function (options, values) {
-        return _this3._eth.eth.
-        estimateGas(_this3._encodeOptions(func, options, values));};
+        func.estimateGas = function (options, values) {
+          return _this3._eth.eth.
+          estimateGas(_this3._encodeOptions(func, options, values));};}
+
 
 
       return func;} }, { key: 'address', get: function get() {return this._address;} }, { key: 'constructors', get: function get() {return this._constructors;} }, { key: 'events', get: function get() {return this._events;} }, { key: 'functions', get: function get() {return this._functions;} }, { key: 'eth', get: function get() {return this._eth;} }, { key: 'abi', get: function get() {return this._abi;} }]);return Contract;}();
@@ -680,4 +682,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Thu Jun  2 10:13:08 UTC 2016 */
+module.exports = EthApi;/* Thu Jun  2 11:04:12 UTC 2016 */

@@ -22,7 +22,8 @@
     "lint": "eslint --ignore-path .gitignore ./lib/",
     "release": "./scripts/release.sh",
     "testCoverage": "istanbul cover _mocha -- 'lib/**/*.spec.js'",
-    "testOnce": "mocha 'lib/**/*.spec.js'"
+    "testOnce": "mocha 'lib/**/*.spec.js'",
+    "testE2E": "mocha 'test/e2e/**/*.spec.js'"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

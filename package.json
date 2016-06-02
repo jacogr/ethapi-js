@@ -1,6 +1,6 @@
 {
   "name": "ethapi-js",
-  "version": "0.0.19",
+  "version": "0.0.22",
   "main": "index.js",
   "jsnext:main": "lib/index.js",
   "author": "Jaco Greeff <jacogr@gmail.com>",
@@ -21,6 +21,7 @@
     "coveralls": "npm run testCoverage && coveralls < coverage/lcov.info",
     "lint": "eslint --ignore-path .gitignore ./lib/",
     "release": "./scripts/release.sh",
+    "test": "npm run testOnce -- -w",
     "testCoverage": "istanbul cover _mocha -- 'lib/**/*.spec.js'",
     "testOnce": "mocha 'lib/**/*.spec.js'",
     "testE2E": "mocha 'lib/**/*.e2e.js'"
@@ -53,7 +54,7 @@
   "dependencies": {
     "bignumber.js": "^2.3.0",
     "es6-promise": "^3.2.1",
-    "ethabi-js": "^0.0.48",
+    "ethabi-js": "^0.0.50",
     "isomorphic-fetch": "^2.2.1"
   }
 }

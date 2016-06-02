@@ -264,7 +264,7 @@ function inBlockNumber(blockNumber) {
 
 
 
-  return inNumber(blockNumber);}
+  return inNumber16(blockNumber);}
 
 
 function inData(data) {
@@ -279,7 +279,15 @@ function inHex(str) {
   return '0x' + (str || '');}
 
 
-function inNumber(number) {
+function inNumber10(number) {
+  if (isInstanceOf(number, BigNumber)) {
+    return number.toNumber();}
+
+
+  return new BigNumber(number || 0).toNumber();}
+
+
+function inNumber16(number) {
   if (isInstanceOf(number, BigNumber)) {
     return inHex(number.toString(16));}
 
@@ -391,22 +399,22 @@ Eth = function () {
 
     filterId) {
       return this._transport.
-      execute('eth_getFilterChanges', inNumber(filterId));} }, { key: 'getFilterChangesEx', value: function getFilterChangesEx(
+      execute('eth_getFilterChanges', inNumber16(filterId));} }, { key: 'getFilterChangesEx', value: function getFilterChangesEx(
 
 
     filterId) {
       return this._transport.
-      execute('eth_getFilterChangesEx', inNumber(filterId));} }, { key: 'getFilterLogs', value: function getFilterLogs(
+      execute('eth_getFilterChangesEx', inNumber16(filterId));} }, { key: 'getFilterLogs', value: function getFilterLogs(
 
 
     filterId) {
       return this._transport.
-      execute('eth_getFilterLogs', inNumber(filterId));} }, { key: 'getFilterLogsEx', value: function getFilterLogsEx(
+      execute('eth_getFilterLogs', inNumber16(filterId));} }, { key: 'getFilterLogsEx', value: function getFilterLogsEx(
 
 
     filterId) {
       return this._transport.
-      execute('eth_getFilterLogsEx', inNumber(filterId));} }, { key: 'getLogs', value: function getLogs(
+      execute('eth_getFilterLogsEx', inNumber16(filterId));} }, { key: 'getLogs', value: function getLogs(
 
 
     options) {
@@ -421,17 +429,17 @@ Eth = function () {
 
     address) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];var blockNumber = arguments.length <= 2 || arguments[2] === undefined ? 'latest' : arguments[2];
       return this._transport.
-      execute('eth_getStorageAt', inAddress(address), inNumber(index), inBlockNumber(blockNumber));} }, { key: 'getTransactionByBlockHashAndIndex', value: function getTransactionByBlockHashAndIndex(
+      execute('eth_getStorageAt', inAddress(address), inNumber16(index), inBlockNumber(blockNumber));} }, { key: 'getTransactionByBlockHashAndIndex', value: function getTransactionByBlockHashAndIndex(
 
 
     hash) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       return this._transport.
-      execute('eth_getTransactionByBlockHashAndIndex', inHex(hash), inNumber(index));} }, { key: 'getTransactionByBlockNumberAndIndex', value: function getTransactionByBlockNumberAndIndex() 
+      execute('eth_getTransactionByBlockHashAndIndex', inHex(hash), inNumber16(index));} }, { key: 'getTransactionByBlockNumberAndIndex', value: function getTransactionByBlockNumberAndIndex() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       return this._transport.
-      execute('eth_getTransactionByBlockNumberAndIndex', inBlockNumber(blockNumber), inNumber(index));} }, { key: 'getTransactionByHash', value: function getTransactionByHash(
+      execute('eth_getTransactionByBlockNumberAndIndex', inBlockNumber(blockNumber), inNumber16(index));} }, { key: 'getTransactionByHash', value: function getTransactionByHash(
 
 
     hash) {
@@ -451,12 +459,12 @@ Eth = function () {
 
     hash) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       return this._transport.
-      execute('eth_getUncleByBlockHashAndIndex', inHex(hash), inNumber(index));} }, { key: 'getUncleByBlockNumberAndIndex', value: function getUncleByBlockNumberAndIndex() 
+      execute('eth_getUncleByBlockHashAndIndex', inHex(hash), inNumber16(index));} }, { key: 'getUncleByBlockNumberAndIndex', value: function getUncleByBlockNumberAndIndex() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       return this._transport.
-      execute('eth_getUncleByBlockNumberAndIndex', inBlockNumber(blockNumber), inNumber(index));} }, { key: 'getUncleCountByBlockHash', value: function getUncleCountByBlockHash(
+      execute('eth_getUncleByBlockNumberAndIndex', inBlockNumber(blockNumber), inNumber16(index));} }, { key: 'getUncleCountByBlockHash', value: function getUncleCountByBlockHash(
 
 
     hash) {
@@ -552,7 +560,7 @@ Eth = function () {
 
     hashrate, clientId) {
       return this._transport.
-      execute('eth_submitHashrate', inNumber(hashrate), clientId);} }, { key: 'submitWork', value: function submitWork(
+      execute('eth_submitHashrate', inNumber16(hashrate), clientId);} }, { key: 'submitWork', value: function submitWork(
 
 
     nonce, powHash, mixDigest) {
@@ -628,17 +636,17 @@ Ethcore = function () {
 
     quantity) {
       return this._transport.
-      execute('ethcore_setGasFloorTarget', inNumber(quantity));} }, { key: 'setMinGasPrice', value: function setMinGasPrice(
+      execute('ethcore_setGasFloorTarget', inNumber16(quantity));} }, { key: 'setMinGasPrice', value: function setMinGasPrice(
 
 
     quantity) {
       return this._transport.
-      execute('ethcore_setMinGasPrice', inNumber(quantity));} }, { key: 'setTransactionsLimit', value: function setTransactionsLimit(
+      execute('ethcore_setMinGasPrice', inNumber16(quantity));} }, { key: 'setTransactionsLimit', value: function setTransactionsLimit(
 
 
     quantity) {
       return this._transport.
-      execute('ethcore_setTransactionsLimit', inNumber(quantity));} }, { key: 'transactionsLimit', value: function transactionsLimit() 
+      execute('ethcore_setTransactionsLimit', inNumber16(quantity));} }, { key: 'transactionsLimit', value: function transactionsLimit() 
 
 
     {
@@ -696,9 +704,9 @@ Personal = function () {
       execute('personal_signAndSendTransaction', txObject, password);} }, { key: 'unlockAccount', value: function unlockAccount(
 
 
-    account, password) {var duration = arguments.length <= 2 || arguments[2] === undefined ? 5 : arguments[2];
+    account, password) {var duration = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
       return this._transport.
-      execute('personal_unlockAccount', inAddress(account), password, inNumber(duration));} }]);return Personal;}();
+      execute('personal_unlockAccount', inAddress(account), password, inNumber10(duration));} }]);return Personal;}();
 
 var Personal$1 = function () {
   function Personal(transport) {babelHelpers.classCallCheck(this, Personal);
@@ -768,7 +776,7 @@ Trace = function () {
 
     txHash, position) {
       return this._transport.
-      execute('trace_get', inHex(txHash), inNumber(position));} }, { key: 'transaction', value: function transaction(
+      execute('trace_get', inHex(txHash), inNumber16(position));} }, { key: 'transaction', value: function transaction(
 
 
     txHash) {
@@ -851,4 +859,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Thu Jun  2 18:45:02 UTC 2016 */
+module.exports = EthApi;/* Thu Jun  2 19:27:39 UTC 2016 */

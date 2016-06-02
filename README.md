@@ -1,17 +1,22 @@
 # ethapi-js
 
-A thin, fast low-level Promise-based wrapper around the Eth APIs.
+A thin, fast, low-level Promise-based wrapper around the Ethereum APIs.
 
 [![Build Status](https://travis-ci.org/jacogr/ethapi-js.svg?branch=master)](https://travis-ci.org/jacogr/ethapi-js)
 [![Coverage Status](https://coveralls.io/repos/github/jacogr/ethapi-js/badge.svg?branch=master)](https://coveralls.io/github/jacogr/ethapi-js?branch=master)
 [![Dependency Status](https://david-dm.org/jacogr/ethapi-js.svg)](https://david-dm.org/jacogr/ethapi-js)
 [![devDependency Status](https://david-dm.org/jacogr/ethapi-js/dev-status.svg)](https://david-dm.org/jacogr/ethapi-js#info=devDependencies)
 
-## getting going
+## contributing
 
-- clone
-- `npm install`
-- `npm run testOnce`
+Clone the repo and install dependencies via `npm install`. Tests can be executed via
+
+- `npm run testOnce` (100% covered unit tests)
+- `npm run testE2E` (E2E against a running RPC-enabled testnet Parity/Geth instance, `parity --testnet --jsonrpc`)
+
+## installation
+
+Install the package with `npm install --save ethapi-js` from the [npm registry ethapi-js](https://www.npmjs.com/package/ethapi-js)
 
 ## usage
 

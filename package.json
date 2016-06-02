@@ -23,7 +23,7 @@
     "release": "./scripts/release.sh",
     "testCoverage": "istanbul cover _mocha -- 'lib/**/*.spec.js'",
     "testOnce": "mocha 'lib/**/*.spec.js'",
-    "testE2E": "mocha 'test/e2e/**/*.spec.js'"
+    "testE2E": "mocha 'lib/**/*.e2e.js'"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

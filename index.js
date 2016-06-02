@@ -680,4 +680,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Thu Jun  2 09:55:50 UTC 2016 */
+module.exports = EthApi;/* Thu Jun  2 10:13:08 UTC 2016 */

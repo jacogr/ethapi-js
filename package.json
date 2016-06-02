@@ -24,7 +24,7 @@
     "test": "npm run testOnce -- -w",
     "testCoverage": "istanbul cover _mocha -- 'lib/**/*.spec.js'",
     "testOnce": "mocha 'lib/**/*.spec.js'",
-    "testE2E": "npm run build && mocha 'lib/**/*.e2e.js'"
+    "testE2E": "mocha 'lib/**/*.e2e.js'"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",

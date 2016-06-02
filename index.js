@@ -236,21 +236,21 @@ var Db = function () {
     dbName, keyName, stringData) {
       return this._transport.execute('db_putString', dbName, keyName, stringData);} }]);return Db;}();
 
-function fromAddress(address) {
+function outAddress(address) {
   // TODO: address conversion to upper-lower
   return address;}
 
 
-function fromNumber(number) {
+function outNumber(number) {
   return new BigNumber(number || 0);}
 
 
-function toAddress(address) {
+function inAddress(address) {
   // TODO: address validation if we have upper-lower addresses
-  return toHex((address || '').toLowerCase());}
+  return inHex((address || '').toLowerCase());}
 
 
-function toBlockNumber(blockNumber) {
+function inBlockNumber(blockNumber) {
   if (isString(blockNumber)) {
     switch (blockNumber) {
       case 'earliest':
@@ -260,10 +260,14 @@ function toBlockNumber(blockNumber) {
 
 
 
-  return toNumber(blockNumber);}
+  return inNumber(blockNumber);}
 
 
-function toHex(str) {
+function inData(data) {
+  return inHex(data);}
+
+
+function inHex(str) {
   if (str && str.substr(0, 2) === '0x') {
     return str;}
 
@@ -271,15 +275,15 @@ function toHex(str) {
   return '0x' + (str || '');}
 
 
-function toNumber(number) {
+function inNumber(number) {
   if (isInstanceOf(number, BigNumber)) {
-    return toHex(number.toString(16));}
+    return inHex(number.toString(16));}
 
 
-  return toHex(new BigNumber(number || 0).toString(16));}
+  return inHex(new BigNumber(number || 0).toString(16));}
 
-// eslint-disable-line no-duplicate-imports
 var 
+
 Eth = function () {
   function Eth(transport) {babelHelpers.classCallCheck(this, Eth);
     this._transport = transport;}babelHelpers.createClass(Eth, [{ key: 'accounts', value: function accounts() 
@@ -288,45 +292,45 @@ Eth = function () {
     {
       return this._transport.
       execute('eth_accounts').
-      then(function (accounts) {return (accounts || []).map(fromAddress);});} }, { key: 'blockNumber', value: function blockNumber() 
+      then(function (accounts) {return (accounts || []).map(outAddress);});} }, { key: 'blockNumber', value: function blockNumber() 
 
 
     {
       return this._transport.
       execute('eth_blockNumber').
-      then(fromNumber);} }, { key: 'call', value: function call(
+      then(outNumber);} }, { key: 'call', value: function call(
 
 
     options) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
       return this._transport.
-      execute('eth_call', options, toBlockNumber(blockNumber));} }, { key: 'coinbase', value: function coinbase() 
+      execute('eth_call', options, inBlockNumber(blockNumber));} }, { key: 'coinbase', value: function coinbase() 
 
 
     {
       return this._transport.
       execute('eth_coinbase').
-      then(fromAddress);} }, { key: 'compileLLL', value: function compileLLL(
+      then(outAddress);} }, { key: 'compileLLL', value: function compileLLL(
 
 
     code) {
       return this._transport.
-      execute('eth_compileLLL', toHex(code));} }, { key: 'compileSerpent', value: function compileSerpent(
+      execute('eth_compileLLL', inData(code));} }, { key: 'compileSerpent', value: function compileSerpent(
 
 
     code) {
       return this._transport.
-      execute('eth_compileSerpent', toHex(code));} }, { key: 'compileSolidity', value: function compileSolidity(
+      execute('eth_compileSerpent', inData(code));} }, { key: 'compileSolidity', value: function compileSolidity(
 
 
     code) {
       return this._transport.
-      execute('eth_compileSolidity', toHex(code));} }, { key: 'estimateGas', value: function estimateGas(
+      execute('eth_compileSolidity', inData(code));} }, { key: 'estimateGas', value: function estimateGas(
 
 
     options) {
       return this._transport.
       execute('eth_estimateGas', options).
-      then(fromNumber);} }, { key: 'fetchQueuedTransactions', value: function fetchQueuedTransactions() 
+      then(outNumber);} }, { key: 'fetchQueuedTransactions', value: function fetchQueuedTransactions() 
 
 
     {
@@ -342,38 +346,38 @@ Eth = function () {
     {
       return this._transport.
       execute('eth_gasPrice').
-      then(fromNumber);} }, { key: 'getBalance', value: function getBalance(
+      then(outNumber);} }, { key: 'getBalance', value: function getBalance(
 
 
     address) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
       return this._transport.
-      execute('eth_getBalance', toAddress(address), toBlockNumber(blockNumber)).
-      then(fromNumber);} }, { key: 'getBlockByHash', value: function getBlockByHash(
+      execute('eth_getBalance', inAddress(address), inBlockNumber(blockNumber)).
+      then(outNumber);} }, { key: 'getBlockByHash', value: function getBlockByHash(
 
 
     hash) {var full = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
       return this._transport.
-      execute('eth_getBlockByHash', toHex(hash), full);} }, { key: 'getBlockByNumber', value: function getBlockByNumber() 
+      execute('eth_getBlockByHash', inHex(hash), full);} }, { key: 'getBlockByNumber', value: function getBlockByNumber() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];var full = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
       return this._transport.
-      execute('eth_getBlockByNumber', toBlockNumber(blockNumber), full);} }, { key: 'getBlockTransactionCountByHash', value: function getBlockTransactionCountByHash(
+      execute('eth_getBlockByNumber', inBlockNumber(blockNumber), full);} }, { key: 'getBlockTransactionCountByHash', value: function getBlockTransactionCountByHash(
 
 
     hash) {
       return this._transport.
-      execute('eth_getBlockTransactionCountByHash', toHex(hash));} }, { key: 'getBlockTransactionCountByNumber', value: function getBlockTransactionCountByNumber() 
+      execute('eth_getBlockTransactionCountByHash', inHex(hash));} }, { key: 'getBlockTransactionCountByNumber', value: function getBlockTransactionCountByNumber() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];
       return this._transport.
-      execute('eth_getBlockTransactionCountByNumber', toBlockNumber(blockNumber));} }, { key: 'getCode', value: function getCode(
+      execute('eth_getBlockTransactionCountByNumber', inBlockNumber(blockNumber));} }, { key: 'getCode', value: function getCode(
 
 
     address) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
       return this._transport.
-      execute('eth_getCode', toAddress(address), toBlockNumber(blockNumber));} }, { key: 'getCompilers', value: function getCompilers() 
+      execute('eth_getCode', inAddress(address), inBlockNumber(blockNumber));} }, { key: 'getCompilers', value: function getCompilers() 
 
 
     {
@@ -383,22 +387,22 @@ Eth = function () {
 
     filterId) {
       return this._transport.
-      execute('eth_getFilterChanges', toNumber(filterId));} }, { key: 'getFilterChangesEx', value: function getFilterChangesEx(
+      execute('eth_getFilterChanges', inNumber(filterId));} }, { key: 'getFilterChangesEx', value: function getFilterChangesEx(
 
 
     filterId) {
       return this._transport.
-      execute('eth_getFilterChangesEx', toNumber(filterId));} }, { key: 'getFilterLogs', value: function getFilterLogs(
+      execute('eth_getFilterChangesEx', inNumber(filterId));} }, { key: 'getFilterLogs', value: function getFilterLogs(
 
 
     filterId) {
       return this._transport.
-      execute('eth_getFilterLogs', toNumber(filterId));} }, { key: 'getFilterLogsEx', value: function getFilterLogsEx(
+      execute('eth_getFilterLogs', inNumber(filterId));} }, { key: 'getFilterLogsEx', value: function getFilterLogsEx(
 
 
     filterId) {
       return this._transport.
-      execute('eth_getFilterLogsEx', toNumber(filterId));} }, { key: 'getLogs', value: function getLogs(
+      execute('eth_getFilterLogsEx', inNumber(filterId));} }, { key: 'getLogs', value: function getLogs(
 
 
     options) {
@@ -413,52 +417,52 @@ Eth = function () {
 
     address) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];var blockNumber = arguments.length <= 2 || arguments[2] === undefined ? 'latest' : arguments[2];
       return this._transport.
-      execute('eth_getStorageAt', toAddress(address), toNumber(index), toBlockNumber(blockNumber));} }, { key: 'getTransactionByBlockHashAndIndex', value: function getTransactionByBlockHashAndIndex(
+      execute('eth_getStorageAt', inAddress(address), inNumber(index), inBlockNumber(blockNumber));} }, { key: 'getTransactionByBlockHashAndIndex', value: function getTransactionByBlockHashAndIndex(
 
 
     hash) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       return this._transport.
-      execute('eth_getTransactionByBlockHashAndIndex', toHex(hash), toNumber(index));} }, { key: 'getTransactionByBlockNumberAndIndex', value: function getTransactionByBlockNumberAndIndex() 
+      execute('eth_getTransactionByBlockHashAndIndex', inHex(hash), inNumber(index));} }, { key: 'getTransactionByBlockNumberAndIndex', value: function getTransactionByBlockNumberAndIndex() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       return this._transport.
-      execute('eth_getTransactionByBlockNumberAndIndex', toBlockNumber(blockNumber), toNumber(index));} }, { key: 'getTransactionByHash', value: function getTransactionByHash(
+      execute('eth_getTransactionByBlockNumberAndIndex', inBlockNumber(blockNumber), inNumber(index));} }, { key: 'getTransactionByHash', value: function getTransactionByHash(
 
 
     hash) {
       return this._transport.
-      execute('eth_getTransactionByHash', toHex(hash));} }, { key: 'getTransactionCount', value: function getTransactionCount(
+      execute('eth_getTransactionByHash', inHex(hash));} }, { key: 'getTransactionCount', value: function getTransactionCount(
 
 
     address) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
       return this._transport.
-      execute('eth_getTransactionCount', toAddress(address), toBlockNumber(blockNumber));} }, { key: 'getTransactionReceipt', value: function getTransactionReceipt(
+      execute('eth_getTransactionCount', inAddress(address), inBlockNumber(blockNumber));} }, { key: 'getTransactionReceipt', value: function getTransactionReceipt(
 
 
     txhash) {
       return this._transport.
-      execute('eth_getTransactionReceipt', toHex(txhash));} }, { key: 'getUncleByBlockHashAndIndex', value: function getUncleByBlockHashAndIndex(
+      execute('eth_getTransactionReceipt', inHex(txhash));} }, { key: 'getUncleByBlockHashAndIndex', value: function getUncleByBlockHashAndIndex(
 
 
     hash) {var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       return this._transport.
-      execute('eth_getUncleByBlockHashAndIndex', toHex(hash), toNumber(index));} }, { key: 'getUncleByBlockNumberAndIndex', value: function getUncleByBlockNumberAndIndex() 
+      execute('eth_getUncleByBlockHashAndIndex', inHex(hash), inNumber(index));} }, { key: 'getUncleByBlockNumberAndIndex', value: function getUncleByBlockNumberAndIndex() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
       return this._transport.
-      execute('eth_getUncleByBlockNumberAndIndex', toBlockNumber(blockNumber), toNumber(index));} }, { key: 'getUncleCountByBlockHash', value: function getUncleCountByBlockHash(
+      execute('eth_getUncleByBlockNumberAndIndex', inBlockNumber(blockNumber), inNumber(index));} }, { key: 'getUncleCountByBlockHash', value: function getUncleCountByBlockHash(
 
 
     hash) {
       return this._transport.
-      execute('eth_getUncleCountByBlockHash', toHex(hash));} }, { key: 'getUncleCountByBlockNumber', value: function getUncleCountByBlockNumber() 
+      execute('eth_getUncleCountByBlockHash', inHex(hash));} }, { key: 'getUncleCountByBlockNumber', value: function getUncleCountByBlockNumber() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];
       return this._transport.
-      execute('eth_getUncleCountByBlockNumber', toBlockNumber(blockNumber));} }, { key: 'getWork', value: function getWork() 
+      execute('eth_getUncleCountByBlockNumber', inBlockNumber(blockNumber));} }, { key: 'getWork', value: function getWork() 
 
 
     {
@@ -469,7 +473,7 @@ Eth = function () {
     {
       return this._transport.
       execute('eth_hashrate').
-      then(toNumber);} }, { key: 'inspectTransaction', value: function inspectTransaction() 
+      then(outNumber);} }, { key: 'inspectTransaction', value: function inspectTransaction() 
 
 
     {
@@ -524,7 +528,7 @@ Eth = function () {
 
     data) {
       return this._transport.
-      execute('eth_sendRawTransaction', toHex(data));} }, { key: 'sendTransaction', value: function sendTransaction(
+      execute('eth_sendRawTransaction', inData(data));} }, { key: 'sendTransaction', value: function sendTransaction(
 
 
     options) {
@@ -533,7 +537,8 @@ Eth = function () {
 
 
     {
-      return this._transport.execute('eth_sign');} }, { key: 'signTransaction', value: function signTransaction() 
+      return this._transport.
+      execute('eth_sign');} }, { key: 'signTransaction', value: function signTransaction() 
 
 
     {
@@ -543,7 +548,7 @@ Eth = function () {
 
     hashrate, clientId) {
       return this._transport.
-      execute('eth_submitHashrate', fromNumber(hashrate), clientId);} }, { key: 'submitWork', value: function submitWork(
+      execute('eth_submitHashrate', inNumber(hashrate), clientId);} }, { key: 'submitWork', value: function submitWork(
 
 
     nonce, powHash, mixDigest) {
@@ -558,72 +563,88 @@ Eth = function () {
 
     filterId) {
       return this._transport.
-      execute('eth_uninstallFilter', toHex(filterId));} }, { key: 'unregister', value: function unregister() 
+      execute('eth_uninstallFilter', inHex(filterId));} }, { key: 'unregister', value: function unregister() 
 
 
     {
       return this._transport.
       execute('eth_unregister');} }]);return Eth;}();
 
-var Ethcore = function () {
+var 
+
+Ethcore = function () {
   function Ethcore(transport) {babelHelpers.classCallCheck(this, Ethcore);
     this._transport = transport;}babelHelpers.createClass(Ethcore, [{ key: 'extraData', value: function extraData() 
 
 
     {
-      return this._transport.execute('ethcore_extraData');} }, { key: 'gasFloorTarget', value: function gasFloorTarget() 
+      return this._transport.
+      execute('ethcore_extraData');} }, { key: 'gasFloorTarget', value: function gasFloorTarget() 
 
 
     {
-      return this._transport.execute('ethcore_gasFloorTarget');} }, { key: 'minGasPrice', value: function minGasPrice() 
+      return this._transport.
+      execute('ethcore_gasFloorTarget');} }, { key: 'minGasPrice', value: function minGasPrice() 
 
 
     {
-      return this._transport.execute('ethcore_minGasPrice');} }, { key: 'netChain', value: function netChain() 
+      return this._transport.
+      execute('ethcore_minGasPrice');} }, { key: 'netChain', value: function netChain() 
 
 
     {
-      return this._transport.execute('ethcore_netChain');} }, { key: 'netMaxPeers', value: function netMaxPeers() 
+      return this._transport.
+      execute('ethcore_netChain');} }, { key: 'netMaxPeers', value: function netMaxPeers() 
 
 
     {
-      return this._transport.execute('ethcore_netMaxPeers');} }, { key: 'netPort', value: function netPort() 
+      return this._transport.
+      execute('ethcore_netMaxPeers');} }, { key: 'netPort', value: function netPort() 
 
 
     {
-      return this._transport.execute('ethcore_netPort');} }, { key: 'nodeName', value: function nodeName() 
+      return this._transport.
+      execute('ethcore_netPort');} }, { key: 'nodeName', value: function nodeName() 
 
 
     {
-      return this._transport.execute('ethcore_nodeName');} }, { key: 'setAuthor', value: function setAuthor(
+      return this._transport.
+      execute('ethcore_nodeName');} }, { key: 'setAuthor', value: function setAuthor(
 
 
     address) {
-      return this._transport.execute('ethcore_setAuthor');} }, { key: 'setExtraData', value: function setExtraData(
+      return this._transport.
+      execute('ethcore_setAuthor', inAddress(address));} }, { key: 'setExtraData', value: function setExtraData(
 
 
     data) {
-      return this._transport.execute('ethcore_setExtraData', data);} }, { key: 'setGasFloorTarget', value: function setGasFloorTarget(
+      return this._transport.
+      execute('ethcore_setExtraData', inData(data));} }, { key: 'setGasFloorTarget', value: function setGasFloorTarget(
 
 
     quantity) {
-      return this._transport.execute('ethcore_setGasFloorTarget');} }, { key: 'setMinGasPrice', value: function setMinGasPrice(
+      return this._transport.
+      execute('ethcore_setGasFloorTarget', inNumber(quantity));} }, { key: 'setMinGasPrice', value: function setMinGasPrice(
 
 
     quantity) {
-      return this._transport.execute('ethcore_setMinGasPrice', quantity);} }, { key: 'setTransactionsLimit', value: function setTransactionsLimit(
+      return this._transport.
+      execute('ethcore_setMinGasPrice', inNumber(quantity));} }, { key: 'setTransactionsLimit', value: function setTransactionsLimit(
 
 
     quantity) {
-      return this._transport.execute('ethcore_setTransactionsLimit', quantity);} }, { key: 'transactionsLimit', value: function transactionsLimit() 
+      return this._transport.
+      execute('ethcore_setTransactionsLimit', inNumber(quantity));} }, { key: 'transactionsLimit', value: function transactionsLimit() 
 
 
     {
-      return this._transport.execute('ethcore_transactionsLimit');} }, { key: 'rpcSettings', value: function rpcSettings() 
+      return this._transport.
+      execute('ethcore_transactionsLimit');} }, { key: 'rpcSettings', value: function rpcSettings() 
 
 
     {
-      return this._transport.execute('ethcore_rpcSettings');} }]);return Ethcore;}();
+      return this._transport.
+      execute('ethcore_rpcSettings');} }]);return Ethcore;}();
 
 var Net = function () {
   function Net(transport) {babelHelpers.classCallCheck(this, Net);
@@ -631,18 +652,21 @@ var Net = function () {
 
 
     {
-      return this._transport.execute('net_listening');} }, { key: 'peerCount', value: function peerCount() 
+      return this._transport.
+      execute('net_listening');} }, { key: 'peerCount', value: function peerCount() 
 
 
     {
-      return this._transport.execute('net_peerCount');} }, { key: 'version', value: function version() 
+      return this._transport.
+      execute('net_peerCount');} }, { key: 'version', value: function version() 
 
 
     {
-      return this._transport.execute('net_version');} }]);return Net;}();
+      return this._transport.
+      execute('net_version');} }]);return Net;}();
 
-// eslint-disable-line no-duplicate-imports
 var 
+
 Personal = function () {
   function Personal(transport) {babelHelpers.classCallCheck(this, Personal);
     this._transport = transport;}babelHelpers.createClass(Personal, [{ key: 'listAccounts', value: function listAccounts() 
@@ -651,13 +675,13 @@ Personal = function () {
     {
       return this._transport.
       execute('personal_listAccounts').
-      then(function (accounts) {return (accounts || []).map(fromAddress);});} }, { key: 'newAccount', value: function newAccount(
+      then(function (accounts) {return (accounts || []).map(outAddress);});} }, { key: 'newAccount', value: function newAccount(
 
 
     password) {
       return this._transport.
       execute('personal_newAccount', password).
-      then(fromAddress);} }, { key: 'signAndSendTransaction', value: function signAndSendTransaction(
+      then(outAddress);} }, { key: 'signAndSendTransaction', value: function signAndSendTransaction(
 
 
     txObject, password) {
@@ -667,7 +691,7 @@ Personal = function () {
 
     account, password) {var duration = arguments.length <= 2 || arguments[2] === undefined ? 5 : arguments[2];
       return this._transport.
-      execute('personal_unlockAccount', toAddress(account), password, toNumber(duration));} }]);return Personal;}();
+      execute('personal_unlockAccount', inAddress(account), password, inNumber(duration));} }]);return Personal;}();
 
 var Personal$1 = function () {
   function Personal(transport) {babelHelpers.classCallCheck(this, Personal);
@@ -675,75 +699,95 @@ var Personal$1 = function () {
 
 
     identity) {
-      return this._transport.execute('shh_addToGroup', identity);} }, { key: 'getFilterChanges', value: function getFilterChanges(
+      return this._transport.
+      execute('shh_addToGroup', identity);} }, { key: 'getFilterChanges', value: function getFilterChanges(
 
 
     filterId) {
-      return this._transport.execute('shh_getFilterChanges', filterId);} }, { key: 'getMessages', value: function getMessages(
+      return this._transport.
+      execute('shh_getFilterChanges', filterId);} }, { key: 'getMessages', value: function getMessages(
 
 
     filterId) {
-      return this._transport.execute('shh_getMessages', filterId);} }, { key: 'hasIdentity', value: function hasIdentity(
+      return this._transport.
+      execute('shh_getMessages', filterId);} }, { key: 'hasIdentity', value: function hasIdentity(
 
 
     identity) {
-      return this._transport.execute('shh_hasIdentity', identity);} }, { key: 'newFilter', value: function newFilter(
+      return this._transport.
+      execute('shh_hasIdentity', identity);} }, { key: 'newFilter', value: function newFilter(
 
 
     options) {
-      return this._transport.execute('shh_newFilter', options);} }, { key: 'newGroup', value: function newGroup() 
+      return this._transport.
+      execute('shh_newFilter', options);} }, { key: 'newGroup', value: function newGroup() 
 
 
     {
-      return this._transport.execute('shh_newGroup');} }, { key: 'newIdentity', value: function newIdentity() 
+      return this._transport.
+      execute('shh_newGroup');} }, { key: 'newIdentity', value: function newIdentity() 
 
 
     {
-      return this._transport.execute('shh_newIdentity');} }, { key: 'post', value: function post(
+      return this._transport.
+      execute('shh_newIdentity');} }, { key: 'post', value: function post(
 
 
     options) {
-      return this._transport.execute('shh_post', options);} }, { key: 'uninstallFilter', value: function uninstallFilter(
+      return this._transport.
+      execute('shh_post', options);} }, { key: 'uninstallFilter', value: function uninstallFilter(
 
 
     filterId) {
-      return this._transport.execute('shh_uninstallFilter', filterId);} }, { key: 'version', value: function version() 
+      return this._transport.
+      execute('shh_uninstallFilter', filterId);} }, { key: 'version', value: function version() 
 
 
     {
-      return this._transport.execute('shh_version');} }]);return Personal;}();
+      return this._transport.
+      execute('shh_version');} }]);return Personal;}();
 
-var Trace = function () {
+var 
+
+Trace = function () {
   function Trace(transport) {babelHelpers.classCallCheck(this, Trace);
     this._transport = transport;}babelHelpers.createClass(Trace, [{ key: 'filter', value: function filter(
 
 
     filterObj) {
-      return this._transport.execute('trace_filter', filterObj);} }, { key: 'get', value: function get(
+      return this._transport.
+      execute('trace_filter', filterObj);} }, { key: 'get', value: function get(
 
 
     txHash, position) {
-      return this._transport.execute('trace_get', txHash, position);} }, { key: 'transaction', value: function transaction(
+      return this._transport.
+      execute('trace_get', inHex(txHash), inNumber(position));} }, { key: 'transaction', value: function transaction(
 
 
     txHash) {
-      return this._transport.execute('trace_transaction', txHash);} }, { key: 'block', value: function block() 
+      return this._transport.
+      execute('trace_transaction', inHex(txHash));} }, { key: 'block', value: function block() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];
-      return this._transport.execute('trace_block', blockNumber);} }]);return Trace;}();
+      return this._transport.
+      execute('trace_block', inBlockNumber(blockNumber));} }]);return Trace;}();
 
-var Web3 = function () {
+var 
+
+Web3 = function () {
   function Web3(transport) {babelHelpers.classCallCheck(this, Web3);
     this._transport = transport;}babelHelpers.createClass(Web3, [{ key: 'clientVersion', value: function clientVersion() 
 
 
     {
-      return this._transport.execute('web3_clientVersion');} }, { key: 'sha3', value: function sha3(
+      return this._transport.
+      execute('web3_clientVersion');} }, { key: 'sha3', value: function sha3(
 
 
     hexStr) {
-      return this._transport.execute('web3_sha3', hexStr);} }]);return Web3;}();
+      return this._transport.
+      execute('web3_sha3', inHex(hexStr));} }]);return Web3;}();
 
 var 
 
@@ -800,4 +844,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Thu Jun  2 16:45:33 UTC 2016 */
+module.exports = EthApi;/* Thu Jun  2 17:27:43 UTC 2016 */

@@ -650,7 +650,9 @@ Ethcore = function () {
       return this._transport.
       execute('ethcore_rpcSettings');} }]);return Ethcore;}();
 
-var Net = function () {
+var 
+
+Net = function () {
   function Net(transport) {babelHelpers.classCallCheck(this, Net);
     this._transport = transport;}babelHelpers.createClass(Net, [{ key: 'listening', value: function listening() 
 
@@ -662,7 +664,8 @@ var Net = function () {
 
     {
       return this._transport.
-      execute('net_peerCount');} }, { key: 'version', value: function version() 
+      execute('net_peerCount').
+      then(outNumber);} }, { key: 'version', value: function version() 
 
 
     {
@@ -848,4 +851,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Thu Jun  2 17:49:46 UTC 2016 */
+module.exports = EthApi;/* Thu Jun  2 18:45:02 UTC 2016 */

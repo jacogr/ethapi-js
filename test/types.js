@@ -10,10 +10,14 @@ export function isAddress (address) {
   return isHexNumber(address);
 }
 
-export function isHexNumber (number) {
-  if (number.substr(0, 2) !== '0x') {
+export function isBoolean (test) {
+  return Object.prototype.toString.call(test) === '[object Boolean]';
+}
+
+export function isHexNumber (test) {
+  if (test.substr(0, 2) !== '0x') {
     return false;
   }
 
-  return (new BigNumber(number, 16)).toString(16) === number.substr(2);
+  return (new BigNumber(test, 16)).toString(16) === test.substr(2);
 }

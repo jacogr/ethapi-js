@@ -1,4 +1,4 @@
-import EthApi from '../lib';
+import EthApi from '../../index';
 
 const transport = new EthApi.Transports.JsonRpc('127.0.0.1', 8545);
 const ethapi = new EthApi(transport);

@@ -245,6 +245,37 @@ function outAddress(address) {
   return address;}
 
 
+function outBlock(block) {
+  if (block) {
+    Object.keys(block).forEach(function (key) {
+      switch (key) {
+        case 'author':
+        case 'miner':
+          block[key] = outAddress(block[key]);
+          break;
+
+        case 'difficulty':
+        case 'gasLimit':
+        case 'gasUsed':
+        case 'number':
+        case 'totalDifficulty':
+          block[key] = outNumber(block[key]);
+          break;
+
+        case 'timestamp':
+          block[key] = outDate(block[key]);
+          break;}});}
+
+
+
+
+  return block;}
+
+
+function outDate(date) {
+  return new Date(outNumber(date).toNumber() * 1000);}
+
+
 function outNumber(number) {
   return new BigNumber(number || 0);}
 
@@ -369,22 +400,26 @@ Eth = function () {
 
     hash) {var full = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
       return this._transport.
-      execute('eth_getBlockByHash', inHex(hash), full);} }, { key: 'getBlockByNumber', value: function getBlockByNumber() 
+      execute('eth_getBlockByHash', inHex(hash), full).
+      then(outBlock);} }, { key: 'getBlockByNumber', value: function getBlockByNumber() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];var full = arguments.length <= 1 || arguments[1] === undefined ? false : arguments[1];
       return this._transport.
-      execute('eth_getBlockByNumber', inBlockNumber(blockNumber), full);} }, { key: 'getBlockTransactionCountByHash', value: function getBlockTransactionCountByHash(
+      execute('eth_getBlockByNumber', inBlockNumber(blockNumber), full).
+      then(outBlock);} }, { key: 'getBlockTransactionCountByHash', value: function getBlockTransactionCountByHash(
 
 
     hash) {
       return this._transport.
-      execute('eth_getBlockTransactionCountByHash', inHex(hash));} }, { key: 'getBlockTransactionCountByNumber', value: function getBlockTransactionCountByNumber() 
+      execute('eth_getBlockTransactionCountByHash', inHex(hash)).
+      then(outNumber);} }, { key: 'getBlockTransactionCountByNumber', value: function getBlockTransactionCountByNumber() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];
       return this._transport.
-      execute('eth_getBlockTransactionCountByNumber', inBlockNumber(blockNumber));} }, { key: 'getCode', value: function getCode(
+      execute('eth_getBlockTransactionCountByNumber', inBlockNumber(blockNumber)).
+      then(outNumber);} }, { key: 'getCode', value: function getCode(
 
 
     address) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
@@ -449,7 +484,8 @@ Eth = function () {
 
     address) {var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
       return this._transport.
-      execute('eth_getTransactionCount', inAddress(address), inBlockNumber(blockNumber));} }, { key: 'getTransactionReceipt', value: function getTransactionReceipt(
+      execute('eth_getTransactionCount', inAddress(address), inBlockNumber(blockNumber)).
+      then(outNumber);} }, { key: 'getTransactionReceipt', value: function getTransactionReceipt(
 
 
     txhash) {
@@ -469,12 +505,14 @@ Eth = function () {
 
     hash) {
       return this._transport.
-      execute('eth_getUncleCountByBlockHash', inHex(hash));} }, { key: 'getUncleCountByBlockNumber', value: function getUncleCountByBlockNumber() 
+      execute('eth_getUncleCountByBlockHash', inHex(hash)).
+      then(outNumber);} }, { key: 'getUncleCountByBlockNumber', value: function getUncleCountByBlockNumber() 
 
 
     {var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];
       return this._transport.
-      execute('eth_getUncleCountByBlockNumber', inBlockNumber(blockNumber));} }, { key: 'getWork', value: function getWork() 
+      execute('eth_getUncleCountByBlockNumber', inBlockNumber(blockNumber)).
+      then(outNumber);} }, { key: 'getWork', value: function getWork() 
 
 
     {
@@ -859,4 +897,4 @@ Contract = Contract;EthApi.
 Transports = { 
   JsonRpc: JsonRpc };
 
-module.exports = EthApi;/* Thu Jun  2 20:37:48 UTC 2016 */
+module.exports = EthApi;/* Fri Jun  3 08:32:22 UTC 2016 */

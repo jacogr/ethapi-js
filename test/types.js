@@ -12,6 +12,10 @@ export function isAddress (address) {
   return isHexNumber(address);
 }
 
+export function isBigNumber (test) {
+  return isInstanceOf(test, BigNumber);
+}
+
 export function isBoolean (test) {
   return Object.prototype.toString.call(test) === '[object Boolean]';
 }

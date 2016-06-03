@@ -1,5 +1,7 @@
 import nock from 'nock';
 
+import { isFunction } from '../lib/util/types';
+
 export const TEST_HOST = '127.0.0.1';
 export const TEST_PORT = 6688;
 
@@ -27,23 +29,17 @@ export function mockRpc (requests) {
 }
 
 export function endpointTest (instance, moduleId, name) {
-  let scope;
+  describe(name, () => {
+    it(`has the ${moduleId}.${name} endpoint`, () => {
+      expect(isFunction(instance[moduleId][name])).to.be.ok;
+    });
 
-  before(() => {
-    scope = mockRpc([{ method: `${moduleId}_${name}`, reply: {} }]);
-    return instance[name]();
-  });
+    it(`maps to ${moduleId}_${name} via RPC`, () => {
+      const scope = mockRpc([{ method: `${moduleId}_${name}`, reply: {} }]);
 
-  it(`maps ${moduleId}_${name}`, () => {
-    expect(scope.isDone()).to.be.true;
-  });
-}
-
-export function endpointDescribe (instance, moduleId) {
-  describe('endpoints', () => {
-    Object
-      .getOwnPropertyNames(Object.getPrototypeOf(instance))
-      .filter((name) => name !== 'constructor')
-      .forEach((name) => endpointTest(instance, moduleId, name));
+      return instance[moduleId][name]().then(() => {
+        expect(scope.isDone()).to.be.true;
+      });
+    });
   });
 }

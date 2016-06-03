@@ -1,23 +1,29 @@
 # ethapi-js
 
-A thin, fast low-level Promise-based wrapper around the Eth APIs.
+A thin, fast, low-level Promise-based wrapper around the Ethereum APIs.
 
 [![Build Status](https://travis-ci.org/jacogr/ethapi-js.svg?branch=master)](https://travis-ci.org/jacogr/ethapi-js)
 [![Coverage Status](https://coveralls.io/repos/github/jacogr/ethapi-js/badge.svg?branch=master)](https://coveralls.io/github/jacogr/ethapi-js?branch=master)
 [![Dependency Status](https://david-dm.org/jacogr/ethapi-js.svg)](https://david-dm.org/jacogr/ethapi-js)
 [![devDependency Status](https://david-dm.org/jacogr/ethapi-js/dev-status.svg)](https://david-dm.org/jacogr/ethapi-js#info=devDependencies)
 
-## getting going
+## contributing
 
-- clone
-- `npm install`
-- `npm run testOnce`
+Clone the repo and install dependencies via `npm install`. Tests can be executed via
+
+- `npm run testOnce` (100% covered unit tests)
+- `npm run testE2E` (E2E against a running RPC-enabled testnet Parity/Geth instance, `parity --testnet --rpc`)
+- setting the environment `DEBUG=true` will display the RPC POST bodies and responses on E2E tests
+
+## installation
+
+Install the package with `npm install --save ethapi-js` from the [npm registry ethapi-js](https://www.npmjs.com/package/ethapi-js)
 
 ## usage
 
 ### initialisation
 
-```
+```javascript
 // import the actual EthApi class
 import EthApi from 'ethapi-js';
 
@@ -26,9 +32,9 @@ const transport = new EthApi.Transports.JsonRpc('127.0.0.1', 8545);
 const ethapi = new EthApi(transport);
 ```
 
-You will require native Promises and fetch, they can be utilised by
+You will require native Promises and fetch support (latest browsers only), they can be utilised by
 
-```
+```javascript
 import 'isomorphic-fetch';
 
 import es6Promise from 'es6-promise';
@@ -38,7 +44,8 @@ es6Promise.polyfill();
 ### making calls
 
 perform a call
-```
+
+```javascript
 ethapi.eth
   .coinbase()
   .then((coinbase) => {
@@ -48,7 +55,7 @@ ethapi.eth
 
 multiple promises
 
-```
+```javascript
 Promise
   .all([
     ethapi.eth.coinbase(),
@@ -61,10 +68,10 @@ Promise
 
 chaining promises
 
-```
+```javascript
 ethapi.eth
   .newFilter({...})
-  .then((filterId) => getFilterChanges(filterId))
+  .then((filterId) => ethapi.eth.getFilterChanges(filterId))
   .then((changes) => {
     console.log(changes);
   });
@@ -74,14 +81,14 @@ ethapi.eth
 
 attach contract
 
-```
+```javascript
 const abi = [{ name: 'callMe', inputs: [{ type: 'bool', ...}, { type: 'string', ...}]}, ...abi...];
 const contract = new EthApi.Contract(ethapi, abi);
 ```
 
 find & call a function
 
-```
+```javascript
 contract.functions
   .find((func) => func.name === 'callMe')
   .call({ gas: 21000 }, [true, 'someString']) // or estimateGas or sendTransaction
@@ -92,7 +99,7 @@ contract.functions
 
 parse events from transaction receipt
 
-```
+```javascript
 contract
   .parseTransactionEvents(txReceipt)
   .then((receipt) => {

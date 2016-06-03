@@ -13,7 +13,7 @@ Clone the repo and install dependencies via `npm install`. Tests can be executed
 
 - `npm run testOnce` (100% covered unit tests)
 - `npm run testE2E` (E2E against a running RPC-enabled testnet Parity/Geth instance, `parity --testnet --rpc`)
-- `DEBUG=true npm run testE2E` (display RPC POST bodies and subsequent responses)
+- setting the environment `DEBUG=true` will display the RPC POST bodies and responses on E2E tests
 
 ## installation
 

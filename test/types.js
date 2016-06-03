@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { isInstanceOf } from '../lib/util/types';
 
 export { isFunction, isInstanceOf } from '../lib/util/types';
 

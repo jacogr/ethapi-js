@@ -339,6 +339,27 @@ function outNumber(number) {
   return new BigNumber(number || 0);
 }
 
+function outReceipt(receipt) {
+  if (receipt) {
+    Object.keys(receipt).forEach(function (key) {
+      switch (key) {
+        case 'blockNumber':
+        case 'cumulativeGasUsed':
+        case 'gasUsed':
+        case 'transactionIndex':
+          receipt[key] = outNumber(receipt[key]);
+          break;
+
+        case 'contractAddress':
+          receipt[key] = outAddress(receipt[key]);
+          break;
+      }
+    });
+  }
+
+  return receipt;
+}
+
 function inAddress(address) {
   // TODO: address validation if we have upper-lower addresses
   return inHex((address || '').toLowerCase());
@@ -606,7 +627,7 @@ var Eth = function () {
   }, {
     key: 'getTransactionReceipt',
     value: function getTransactionReceipt(txhash) {
-      return this._transport.execute('eth_getTransactionReceipt', inHex(txhash));
+      return this._transport.execute('eth_getTransactionReceipt', inHex(txhash)).then(outReceipt);
     }
   }, {
     key: 'getUncleByBlockHashAndIndex',
@@ -1068,4 +1089,4 @@ EthApi.Transports = {
   JsonRpc: JsonRpc
 };
 
-module.exports = EthApi;/* Fri Jun  3 10:46:57 UTC 2016 */
+module.exports = EthApi;/* Fri Jun  3 12:05:44 UTC 2016 */

@@ -315,6 +315,7 @@ function outBlock(block) {
         case 'difficulty':
         case 'gasLimit':
         case 'gasUsed':
+        case 'nonce':
         case 'number':
         case 'totalDifficulty':
           block[key] = outNumber(block[key]);
@@ -384,6 +385,28 @@ function inNumber16(number) {
   return inHex(new BigNumber(number || 0).toString(16));
 }
 
+function inOptions(options) {
+  if (options) {
+    Object.keys(options).forEach(function (key) {
+      switch (key) {
+        case 'from':
+        case 'to':
+          options[key] = inAddress(options[key]);
+          break;
+
+        case 'gas':
+        case 'gasPrice':
+        case 'value':
+        case 'nonce':
+          options[key] = inNumber16(options[key]);
+          break;
+      }
+    });
+  }
+
+  return options;
+}
+
 var Eth = function () {
   function Eth(transport) {
     babelHelpers.classCallCheck(this, Eth);
@@ -408,7 +431,7 @@ var Eth = function () {
     value: function call(options) {
       var blockNumber = arguments.length <= 1 || arguments[1] === undefined ? 'latest' : arguments[1];
 
-      return this._transport.execute('eth_call', options, inBlockNumber(blockNumber));
+      return this._transport.execute('eth_call', inOptions(options), inBlockNumber(blockNumber));
     }
   }, {
     key: 'coinbase',
@@ -661,7 +684,7 @@ var Eth = function () {
   }, {
     key: 'sendTransaction',
     value: function sendTransaction(options) {
-      return this._transport.execute('eth_sendTransaction', options);
+      return this._transport.execute('eth_sendTransaction', inOptions(options));
     }
   }, {
     key: 'sign',
@@ -1026,4 +1049,4 @@ EthApi.Transports = {
   JsonRpc: JsonRpc
 };
 
-module.exports = EthApi;/* Fri Jun  3 09:03:31 UTC 2016 */
+module.exports = EthApi;/* Fri Jun  3 10:34:15 UTC 2016 */

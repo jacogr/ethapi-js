@@ -361,6 +361,25 @@ function inData(data) {
   return inHex(data);
 }
 
+function inFilter(options) {
+  if (options) {
+    Object.keys(options).forEach(function (key) {
+      switch (key) {
+        case 'address':
+          options[key] = inAddress(options[key]);
+          break;
+
+        case 'fromBlock':
+        case 'toBlock':
+          options[key] = inBlockNumber(options[key]);
+          break;
+      }
+    });
+  }
+
+  return options;
+}
+
 function inHex(str) {
   if (str && str.substr(0, 2) === '0x') {
     return str;
@@ -456,7 +475,7 @@ var Eth = function () {
   }, {
     key: 'estimateGas',
     value: function estimateGas(options) {
-      return this._transport.execute('eth_estimateGas', options).then(outNumber);
+      return this._transport.execute('eth_estimateGas', inOptions(options)).then(outNumber);
     }
   }, {
     key: 'fetchQueuedTransactions',
@@ -542,12 +561,12 @@ var Eth = function () {
   }, {
     key: 'getLogs',
     value: function getLogs(options) {
-      return this._transport.execute('eth_getLogs', options);
+      return this._transport.execute('eth_getLogs', inFilter(options));
     }
   }, {
     key: 'getLogsEx',
     value: function getLogsEx(options) {
-      return this._transport.execute('eth_getLogsEx', options);
+      return this._transport.execute('eth_getLogsEx', inFilter(options));
     }
   }, {
     key: 'getStorageAt',
@@ -644,12 +663,12 @@ var Eth = function () {
   }, {
     key: 'newFilter',
     value: function newFilter(options) {
-      return this._transport.execute('eth_newFilter', options);
+      return this._transport.execute('eth_newFilter', inFilter(options));
     }
   }, {
     key: 'newFilterEx',
     value: function newFilterEx(options) {
-      return this._transport.execute('eth_newFilterEx', options);
+      return this._transport.execute('eth_newFilterEx', inFilter(options));
     }
   }, {
     key: 'newPendingTransactionFilter',
@@ -704,7 +723,7 @@ var Eth = function () {
   }, {
     key: 'submitWork',
     value: function submitWork(nonce, powHash, mixDigest) {
-      return this._transport.execute('eth_submitWork', nonce, powHash, mixDigest);
+      return this._transport.execute('eth_submitWork', inNumber16(nonce), powHash, mixDigest);
     }
   }, {
     key: 'syncing',
@@ -1049,4 +1068,4 @@ EthApi.Transports = {
   JsonRpc: JsonRpc
 };
 
-module.exports = EthApi;/* Fri Jun  3 10:34:15 UTC 2016 */
+module.exports = EthApi;/* Fri Jun  3 10:46:57 UTC 2016 */

@@ -1093,8 +1093,8 @@ var EthApi = function () {
 }();
 
 EthApi.Contract = Contract;
-EthApi.Transports = {
+EthApi.Transport = {
   Http: Http
 };
 
-module.exports = EthApi;/* Sat Jun  4 06:56:47 UTC 2016 */
+module.exports = EthApi;/* Sat Jun  4 07:07:08 UTC 2016 */

@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { isInstanceOf } from '../lib/util/types';
 
 export { isFunction, isInstanceOf } from '../lib/util/types';
 
@@ -10,6 +11,10 @@ export function isAddress (address) {
   }
 
   return isHexNumber(address);
+}
+
+export function isBigNumber (test) {
+  return isInstanceOf(test, BigNumber);
 }
 
 export function isBoolean (test) {

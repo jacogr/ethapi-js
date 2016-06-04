@@ -1089,4 +1089,4 @@ EthApi.Transports = {
   JsonRpc: JsonRpc
 };
 
-module.exports = EthApi;/* Fri Jun  3 12:05:44 UTC 2016 */
+module.exports = EthApi;/* Sat Jun  4 06:03:50 UTC 2016 */

@@ -35,17 +35,17 @@ babelHelpers;
 
 /* global fetch */
 
-var JsonRpc = function () {
-  function JsonRpc(host, port) {
-    babelHelpers.classCallCheck(this, JsonRpc);
+var Http = function () {
+  function Http(hostOrPath, port) {
+    babelHelpers.classCallCheck(this, Http);
 
-    this._host = host;
+    this._host = hostOrPath;
     this._port = port;
     this._id = 1;
     this._debug = false;
   }
 
-  babelHelpers.createClass(JsonRpc, [{
+  babelHelpers.createClass(Http, [{
     key: '_encodeBody',
     value: function _encodeBody(method, params) {
       return JSON.stringify({
@@ -77,6 +77,10 @@ var JsonRpc = function () {
   }, {
     key: '_getEndpoint',
     value: function _getEndpoint() {
+      if (!this._port) {
+        return this._host;
+      }
+
       return 'http://' + this._host + ':' + this._port + '/';
     }
   }, {
@@ -120,7 +124,7 @@ var JsonRpc = function () {
       this._debug = flag;
     }
   }]);
-  return JsonRpc;
+  return Http;
 }();
 
 function isFunction(test) {
@@ -1090,7 +1094,7 @@ var EthApi = function () {
 
 EthApi.Contract = Contract;
 EthApi.Transports = {
-  JsonRpc: JsonRpc
+  Http: Http
 };
 
-module.exports = EthApi;/* Sat Jun  4 06:21:05 UTC 2016 */
+module.exports = EthApi;/* Sat Jun  4 06:25:14 UTC 2016 */

@@ -781,6 +781,21 @@ var Ethcore = function () {
   }
 
   babelHelpers.createClass(Ethcore, [{
+    key: 'defaultExtraData',
+    value: function defaultExtraData() {
+      return this._transport.execute('ethcore_defaultExtraData');
+    }
+  }, {
+    key: 'devLogs',
+    value: function devLogs() {
+      return this._transport.execute('ethcore_devLogs');
+    }
+  }, {
+    key: 'devLogsLevels',
+    value: function devLogsLevels() {
+      return this._transport.execute('ethcore_devLogsLevels');
+    }
+  }, {
     key: 'extraData',
     value: function extraData() {
       return this._transport.execute('ethcore_extraData');
@@ -1097,4 +1112,4 @@ EthApi.Transport = {
   Http: Http
 };
 
-module.exports = EthApi;/* Sat Jun  4 07:07:08 UTC 2016 */
+module.exports = EthApi;/* Sat Jun  4 08:53:15 UTC 2016 */

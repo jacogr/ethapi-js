@@ -788,12 +788,12 @@ var Ethcore = function () {
   }, {
     key: 'gasFloorTarget',
     value: function gasFloorTarget() {
-      return this._transport.execute('ethcore_gasFloorTarget');
+      return this._transport.execute('ethcore_gasFloorTarget').then(outNumber);
     }
   }, {
     key: 'minGasPrice',
     value: function minGasPrice() {
-      return this._transport.execute('ethcore_minGasPrice');
+      return this._transport.execute('ethcore_minGasPrice').then(outNumber);
     }
   }, {
     key: 'netChain',
@@ -803,12 +803,12 @@ var Ethcore = function () {
   }, {
     key: 'netMaxPeers',
     value: function netMaxPeers() {
-      return this._transport.execute('ethcore_netMaxPeers');
+      return this._transport.execute('ethcore_netMaxPeers').then(outNumber);
     }
   }, {
     key: 'netPort',
     value: function netPort() {
-      return this._transport.execute('ethcore_netPort');
+      return this._transport.execute('ethcore_netPort').then(outNumber);
     }
   }, {
     key: 'nodeName',
@@ -843,7 +843,7 @@ var Ethcore = function () {
   }, {
     key: 'transactionsLimit',
     value: function transactionsLimit() {
-      return this._transport.execute('ethcore_transactionsLimit');
+      return this._transport.execute('ethcore_transactionsLimit').then(outNumber);
     }
   }, {
     key: 'rpcSettings',
@@ -1097,4 +1097,4 @@ EthApi.Transports = {
   Http: Http
 };
 
-module.exports = EthApi;/* Sat Jun  4 06:25:14 UTC 2016 */
+module.exports = EthApi;/* Sat Jun  4 06:56:47 UTC 2016 */

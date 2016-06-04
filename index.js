@@ -440,6 +440,10 @@ function inOptions(options) {
         case 'nonce':
           options[key] = inNumber16(options[key]);
           break;
+
+        case 'data':
+          options[key] = inData(options[key]);
+          break;
       }
     });
   }
@@ -893,8 +897,8 @@ var Personal = function () {
     }
   }, {
     key: 'signAndSendTransaction',
-    value: function signAndSendTransaction(txObject, password) {
-      return this._transport.execute('personal_signAndSendTransaction', txObject, password);
+    value: function signAndSendTransaction(options, password) {
+      return this._transport.execute('personal_signAndSendTransaction', inOptions(options), password);
     }
   }, {
     key: 'unlockAccount',
@@ -1089,4 +1093,4 @@ EthApi.Transports = {
   JsonRpc: JsonRpc
 };
 
-module.exports = EthApi;/* Sat Jun  4 06:03:50 UTC 2016 */
+module.exports = EthApi;/* Sat Jun  4 06:21:05 UTC 2016 */

@@ -2,16 +2,9 @@ import BigNumber from 'bignumber.js';
 import { isInstanceOf } from '../lib/util/types';
 
 export { isFunction, isInstanceOf } from '../lib/util/types';
+export { isAddress } from '../lib/util/address';
 
 const ZEROS = '000000000000000000000000000000000000000000000000000000000000';
-
-export function isAddress (address) {
-  if (address.length !== 42) {
-    return false;
-  }
-
-  return isHexNumber(address);
-}
 
 export function isBigNumber (test) {
   return isInstanceOf(test, BigNumber);

@@ -303,6 +303,97 @@ var Db = function () {
   return Db;
 }();
 
+function inAddress(address) {
+  // TODO: address validation if we have upper-lower addresses
+  return inHex((address || '').toLowerCase());
+}
+
+function inBlockNumber(blockNumber) {
+  if (isString(blockNumber)) {
+    switch (blockNumber) {
+      case 'earliest':
+      case 'latest':
+      case 'pending':
+        return blockNumber;
+    }
+  }
+
+  return inNumber16(blockNumber);
+}
+
+function inData(data) {
+  return inHex(data);
+}
+
+function inFilter(options) {
+  if (options) {
+    Object.keys(options).forEach(function (key) {
+      switch (key) {
+        case 'address':
+          options[key] = inAddress(options[key]);
+          break;
+
+        case 'fromBlock':
+        case 'toBlock':
+          options[key] = inBlockNumber(options[key]);
+          break;
+      }
+    });
+  }
+
+  return options;
+}
+
+function inHex(str) {
+  if (str && str.substr(0, 2) === '0x') {
+    return str;
+  }
+
+  return '0x' + (str || '');
+}
+
+function inNumber10(number) {
+  if (isInstanceOf(number, BigNumber)) {
+    return number.toNumber();
+  }
+
+  return new BigNumber(number || 0).toNumber();
+}
+
+function inNumber16(number) {
+  if (isInstanceOf(number, BigNumber)) {
+    return inHex(number.toString(16));
+  }
+
+  return inHex(new BigNumber(number || 0).toString(16));
+}
+
+function inOptions(options) {
+  if (options) {
+    Object.keys(options).forEach(function (key) {
+      switch (key) {
+        case 'from':
+        case 'to':
+          options[key] = inAddress(options[key]);
+          break;
+
+        case 'gas':
+        case 'gasPrice':
+        case 'value':
+        case 'nonce':
+          options[key] = inNumber16(options[key]);
+          break;
+
+        case 'data':
+          options[key] = inData(options[key]);
+          break;
+      }
+    });
+  }
+
+  return options;
+}
+
 // eslint-disable-line camelcase
 
 function isChecksumValid(_address) {
@@ -412,97 +503,6 @@ function outReceipt(receipt) {
   }
 
   return receipt;
-}
-
-function inAddress(address) {
-  // TODO: address validation if we have upper-lower addresses
-  return inHex((address || '').toLowerCase());
-}
-
-function inBlockNumber(blockNumber) {
-  if (isString(blockNumber)) {
-    switch (blockNumber) {
-      case 'earliest':
-      case 'latest':
-      case 'pending':
-        return blockNumber;
-    }
-  }
-
-  return inNumber16(blockNumber);
-}
-
-function inData(data) {
-  return inHex(data);
-}
-
-function inFilter(options) {
-  if (options) {
-    Object.keys(options).forEach(function (key) {
-      switch (key) {
-        case 'address':
-          options[key] = inAddress(options[key]);
-          break;
-
-        case 'fromBlock':
-        case 'toBlock':
-          options[key] = inBlockNumber(options[key]);
-          break;
-      }
-    });
-  }
-
-  return options;
-}
-
-function inHex(str) {
-  if (str && str.substr(0, 2) === '0x') {
-    return str;
-  }
-
-  return '0x' + (str || '');
-}
-
-function inNumber10(number) {
-  if (isInstanceOf(number, BigNumber)) {
-    return number.toNumber();
-  }
-
-  return new BigNumber(number || 0).toNumber();
-}
-
-function inNumber16(number) {
-  if (isInstanceOf(number, BigNumber)) {
-    return inHex(number.toString(16));
-  }
-
-  return inHex(new BigNumber(number || 0).toString(16));
-}
-
-function inOptions(options) {
-  if (options) {
-    Object.keys(options).forEach(function (key) {
-      switch (key) {
-        case 'from':
-        case 'to':
-          options[key] = inAddress(options[key]);
-          break;
-
-        case 'gas':
-        case 'gasPrice':
-        case 'value':
-        case 'nonce':
-          options[key] = inNumber16(options[key]);
-          break;
-
-        case 'data':
-          options[key] = inData(options[key]);
-          break;
-      }
-    });
-  }
-
-  return options;
 }
 
 var Eth = function () {
@@ -1162,4 +1162,4 @@ EthApi.Transport = {
   Http: Http
 };
 
-module.exports = EthApi;/* Sun Jun  5 11:15:58 UTC 2016 */
+module.exports = EthApi;/* Sun Jun  5 11:35:07 UTC 2016 */

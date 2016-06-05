@@ -305,7 +305,7 @@ var Db = function () {
 
 function inAddress(address) {
   // TODO: address validation if we have upper-lower addresses
-  return inHex((address || '').toLowerCase());
+  return inHex(address);
 }
 
 function inBlockNumber(blockNumber) {
@@ -346,10 +346,10 @@ function inFilter(options) {
 
 function inHex(str) {
   if (str && str.substr(0, 2) === '0x') {
-    return str;
+    return str.toLowerCase();
   }
 
-  return '0x' + (str || '');
+  return '0x' + (str || '').toLowerCase();
 }
 
 function inNumber10(number) {
@@ -1162,4 +1162,4 @@ EthApi.Transport = {
   Http: Http
 };
 
-module.exports = EthApi;/* Sun Jun  5 11:35:07 UTC 2016 */
+module.exports = EthApi;/* Sun Jun  5 13:23:15 UTC 2016 */

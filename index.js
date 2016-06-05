@@ -272,37 +272,6 @@ var Contract = function () {
   return Contract;
 }();
 
-var Db = function () {
-  function Db(transport) {
-    babelHelpers.classCallCheck(this, Db);
-
-    this._transport = transport;
-  }
-
-  babelHelpers.createClass(Db, [{
-    key: 'getHex',
-    value: function getHex(dbName, keyName) {
-      return this._transport.execute('db_getHex', dbName, keyName);
-    }
-  }, {
-    key: 'getString',
-    value: function getString(dbName, keyName) {
-      return this._transport.execute('db_getString', dbName, keyName);
-    }
-  }, {
-    key: 'putHex',
-    value: function putHex(dbName, keyName, hexData) {
-      return this._transport.execute('db_putHex', dbName, keyName, hexData);
-    }
-  }, {
-    key: 'putString',
-    value: function putString(dbName, keyName, stringData) {
-      return this._transport.execute('db_putString', dbName, keyName, stringData);
-    }
-  }]);
-  return Db;
-}();
-
 function inAddress(address) {
   // TODO: address validation if we have upper-lower addresses
   return inHex(address);
@@ -393,6 +362,37 @@ function inOptions(options) {
 
   return options;
 }
+
+var Db = function () {
+  function Db(transport) {
+    babelHelpers.classCallCheck(this, Db);
+
+    this._transport = transport;
+  }
+
+  babelHelpers.createClass(Db, [{
+    key: 'getHex',
+    value: function getHex(dbName, keyName) {
+      return this._transport.execute('db_getHex', dbName, keyName);
+    }
+  }, {
+    key: 'getString',
+    value: function getString(dbName, keyName) {
+      return this._transport.execute('db_getString', dbName, keyName);
+    }
+  }, {
+    key: 'putHex',
+    value: function putHex(dbName, keyName, hexData) {
+      return this._transport.execute('db_putHex', dbName, keyName, inHex(hexData));
+    }
+  }, {
+    key: 'putString',
+    value: function putString(dbName, keyName, stringData) {
+      return this._transport.execute('db_putString', dbName, keyName, stringData);
+    }
+  }]);
+  return Db;
+}();
 
 // eslint-disable-line camelcase
 
@@ -1162,4 +1162,4 @@ EthApi.Transport = {
   Http: Http
 };
 
-module.exports = EthApi;/* Sun Jun  5 13:23:15 UTC 2016 */
+module.exports = EthApi;/* Sun Jun  5 14:35:47 UTC 2016 */

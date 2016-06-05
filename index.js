@@ -4,6 +4,7 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 
 var EthAbi = _interopDefault(require('ethabi-js'));
 var BigNumber = _interopDefault(require('bignumber.js'));
+var jsSha3 = require('js-sha3');
 
 var babelHelpers = {};
 
@@ -302,9 +303,58 @@ var Db = function () {
   return Db;
 }();
 
+// eslint-disable-line camelcase
+
+function isChecksumValid(_address) {
+  var address = _address.replace('0x', '');
+  var hash = jsSha3.keccak_256(address.toLowerCase(address));
+
+  for (var n = 0; n < 40; n++) {
+    var hashval = parseInt(hash[n], 16);
+    var isLower = address[n].toUpperCase() !== address[n];
+    var isUpper = address[n].toLowerCase() !== address[n];
+
+    if (hashval > 7 && isLower || hashval <= 7 && isUpper) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isAddress(address) {
+  if (address && address.length === 42) {
+    if (!/^(0x)?[0-9a-f]{40}$/i.test(address)) {
+      return false;
+    } else if (/^(0x)?[0-9a-f]{40}$/.test(address) || /^(0x)?[0-9A-F]{40}$/.test(address)) {
+      return true;
+    }
+
+    return isChecksumValid(address);
+  }
+
+  return false;
+}
+
+function toChecksumAddress(_address) {
+  var address = (_address || '').toLowerCase();
+
+  if (!isAddress(address)) {
+    return '';
+  }
+
+  var hash = jsSha3.keccak_256(address.slice(-40));
+  var result = '0x';
+
+  for (var n = 0; n < 40; n++) {
+    result = '' + result + (parseInt(hash[n], 16) > 7 ? address[n + 2].toUpperCase() : address[n + 2]);
+  }
+
+  return result;
+}
+
 function outAddress(address) {
-  // TODO: address conversion to upper-lower
-  return address;
+  return toChecksumAddress(address);
 }
 
 function outBlock(block) {
@@ -781,6 +831,21 @@ var Ethcore = function () {
   }
 
   babelHelpers.createClass(Ethcore, [{
+    key: 'defaultExtraData',
+    value: function defaultExtraData() {
+      return this._transport.execute('ethcore_defaultExtraData');
+    }
+  }, {
+    key: 'devLogs',
+    value: function devLogs() {
+      return this._transport.execute('ethcore_devLogs');
+    }
+  }, {
+    key: 'devLogsLevels',
+    value: function devLogsLevels() {
+      return this._transport.execute('ethcore_devLogsLevels');
+    }
+  }, {
     key: 'extraData',
     value: function extraData() {
       return this._transport.execute('ethcore_extraData');
@@ -788,12 +853,12 @@ var Ethcore = function () {
   }, {
     key: 'gasFloorTarget',
     value: function gasFloorTarget() {
-      return this._transport.execute('ethcore_gasFloorTarget');
+      return this._transport.execute('ethcore_gasFloorTarget').then(outNumber);
     }
   }, {
     key: 'minGasPrice',
     value: function minGasPrice() {
-      return this._transport.execute('ethcore_minGasPrice');
+      return this._transport.execute('ethcore_minGasPrice').then(outNumber);
     }
   }, {
     key: 'netChain',
@@ -803,12 +868,12 @@ var Ethcore = function () {
   }, {
     key: 'netMaxPeers',
     value: function netMaxPeers() {
-      return this._transport.execute('ethcore_netMaxPeers');
+      return this._transport.execute('ethcore_netMaxPeers').then(outNumber);
     }
   }, {
     key: 'netPort',
     value: function netPort() {
-      return this._transport.execute('ethcore_netPort');
+      return this._transport.execute('ethcore_netPort').then(outNumber);
     }
   }, {
     key: 'nodeName',
@@ -843,7 +908,7 @@ var Ethcore = function () {
   }, {
     key: 'transactionsLimit',
     value: function transactionsLimit() {
-      return this._transport.execute('ethcore_transactionsLimit');
+      return this._transport.execute('ethcore_transactionsLimit').then(outNumber);
     }
   }, {
     key: 'rpcSettings',
@@ -1093,8 +1158,8 @@ var EthApi = function () {
 }();
 
 EthApi.Contract = Contract;
-EthApi.Transports = {
+EthApi.Transport = {
   Http: Http
 };
 
-module.exports = EthApi;/* Sat Jun  4 06:25:14 UTC 2016 */
+module.exports = EthApi;/* Sun Jun  5 10:53:35 UTC 2016 */

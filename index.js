@@ -1186,4 +1186,4 @@ EthApi.Transport = {
   Http: Http
 };
 
-module.exports = EthApi;/* Mon Jun  6 07:54:07 UTC 2016 */
+module.exports = EthApi;/* Mon Jun  6 13:58:24 UTC 2016 */

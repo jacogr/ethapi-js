@@ -505,6 +505,30 @@ function outReceipt(receipt) {
   return receipt;
 }
 
+function outTransaction(tx) {
+  if (tx) {
+    Object.keys(tx).forEach(function (key) {
+      switch (key) {
+        case 'blockNumber':
+        case 'gasPrice':
+        case 'gas':
+        case 'nonce':
+        case 'transactionIndex':
+        case 'value':
+          tx[key] = outNumber(tx[key]);
+          break;
+
+        case 'from':
+        case 'to':
+          tx[key] = outAddress(tx[key]);
+          break;
+      }
+    });
+  }
+
+  return tx;
+}
+
 var Eth = function () {
   function Eth(transport) {
     babelHelpers.classCallCheck(this, Eth);
@@ -660,7 +684,7 @@ var Eth = function () {
     value: function getTransactionByBlockHashAndIndex(hash) {
       var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-      return this._transport.execute('eth_getTransactionByBlockHashAndIndex', inHex(hash), inNumber16(index));
+      return this._transport.execute('eth_getTransactionByBlockHashAndIndex', inHex(hash), inNumber16(index)).then(outTransaction);
     }
   }, {
     key: 'getTransactionByBlockNumberAndIndex',
@@ -668,12 +692,12 @@ var Eth = function () {
       var blockNumber = arguments.length <= 0 || arguments[0] === undefined ? 'latest' : arguments[0];
       var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 
-      return this._transport.execute('eth_getTransactionByBlockNumberAndIndex', inBlockNumber(blockNumber), inNumber16(index));
+      return this._transport.execute('eth_getTransactionByBlockNumberAndIndex', inBlockNumber(blockNumber), inNumber16(index)).then(outTransaction);
     }
   }, {
     key: 'getTransactionByHash',
     value: function getTransactionByHash(hash) {
-      return this._transport.execute('eth_getTransactionByHash', inHex(hash));
+      return this._transport.execute('eth_getTransactionByHash', inHex(hash)).then(outTransaction);
     }
   }, {
     key: 'getTransactionCount',
@@ -1162,4 +1186,4 @@ EthApi.Transport = {
   Http: Http
 };
 
-module.exports = EthApi;/* Sun Jun  5 14:35:47 UTC 2016 */
+module.exports = EthApi;/* Mon Jun  6 07:54:07 UTC 2016 */

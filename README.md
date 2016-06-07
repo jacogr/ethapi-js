@@ -28,7 +28,7 @@ Install the package with `npm install --save ethapi-js` from the [npm registry e
 import EthApi from 'ethapi-js';
 
 // do the setup
-const transport = new EthApi.Transport.Http('127.0.0.1', 8545);  // or .Ws('ws://localhost:8080')
+const transport = new EthApi.Transport.Http('http://localhost:8545');  // or .Ws('ws://localhost:8080')
 const ethapi = new EthApi(transport);
 ```
 

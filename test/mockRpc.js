@@ -36,8 +36,10 @@ export function mockWs (requests) {
 
   scope.isDone = () => scope.requests === requests.length;
   scope.stop = () => {
-    mockServer.stop();
-    mockServer = null;
+    if (mockServer) {
+      mockServer.stop();
+      mockServer = null;
+    }
   };
 
   mockServer.on('message', (_body) => {

@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { MockServer } from 'mock-socket';
+import { Server as MockWsServer } from 'mock-socket';
 
 import { isFunction } from '../lib/util/types';
 
@@ -32,17 +32,19 @@ export function mockHttp (requests) {
 
 export function mockWs (requests) {
   const scope = { requests: 0, body: {} };
-  const mockServer = new MockServer(TEST_WS);
+  const mockServer = new MockWsServer(TEST_WS);
+
+  scope.isDone = () => scope.requests === requests.length;
 
   mockServer.on('message', (body) => {
     const input = JSON.parse(body);
     const request = requests[scope.requests];
+    const response = { id: input.id, result: request.reply };
 
-    request.reply.id = input.id;
     scope.body[request.method] = body;
     scope.requests++;
 
-    mockServer.send(JSON.stringify(request.reply));
+    mockServer.send(JSON.stringify(response));
   });
 
   return scope;

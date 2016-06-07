@@ -50,7 +50,8 @@
     "rollup": "^0.26.3",
     "rollup-plugin-babel": "^2.4.0",
     "sinon": "^1.17.4",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "websocket": "^1.0.23"
   },
   "dependencies": {
     "bignumber.js": "^2.3.0",

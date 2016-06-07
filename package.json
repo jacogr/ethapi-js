@@ -45,6 +45,7 @@
     "ethereum-rpc-json": "^0.0.1",
     "istanbul": "^1.0.0-alpha.2",
     "mocha": "^2.5.3",
+    "mock-socket": "^3.0.0",
     "nock": "^8.0.0",
     "rollup": "^0.26.3",
     "rollup-plugin-babel": "^2.4.0",

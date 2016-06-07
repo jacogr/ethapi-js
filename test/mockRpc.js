@@ -45,7 +45,10 @@ export function mockWs (requests) {
   mockServer.on('message', (_body) => {
     const body = JSON.parse(_body);
     const request = requests[scope.requests];
-    const response = { id: body.id, result: request.reply };
+    const reply = request.reply;
+    const response = reply.error
+      ? { id: body.id, error: { code: reply.error.code, message: reply.error.message } }
+      : { id: body.id, result: reply };
 
     scope.body[request.method] = body;
     scope.requests++;

@@ -1,9 +1,11 @@
 import nock from 'nock';
+import { MockServer } from 'mock-socket';
 
 import { isFunction } from '../lib/util/types';
 
 export const TEST_HOST = '127.0.0.1';
 export const TEST_PORT = 6688;
+export const TEST_WS = 'ws://localhost:8866';
 
 export function mockHttp (requests) {
   let scope = nock(`http://${TEST_HOST}:${TEST_PORT}`);
@@ -23,6 +25,24 @@ export function mockHttp (requests) {
 
         return request.reply;
       });
+  });
+
+  return scope;
+}
+
+export function mockWs (requests) {
+  const scope = { requests: 0, body: {} };
+  const mockServer = new MockServer(TEST_WS);
+
+  mockServer.on('message', (body) => {
+    const input = JSON.parse(body);
+    const request = requests[scope.requests];
+
+    request.reply.id = input.id;
+    scope.body[request.method] = body;
+    scope.requests++;
+
+    mockServer.send(JSON.stringify(request.reply));
   });
 
   return scope;

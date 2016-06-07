@@ -32,14 +32,18 @@ export function mockHttp (requests) {
 
 export function mockWs (requests) {
   const scope = { requests: 0, body: {} };
-  const mockServer = new MockWsServer(TEST_WS);
+  let mockServer = new MockWsServer(TEST_WS);
 
   scope.isDone = () => scope.requests === requests.length;
+  scope.stop = () => {
+    mockServer.stop();
+    mockServer = null;
+  };
 
-  mockServer.on('message', (body) => {
-    const input = JSON.parse(body);
+  mockServer.on('message', (_body) => {
+    const body = JSON.parse(_body);
     const request = requests[scope.requests];
-    const response = { id: input.id, result: request.reply };
+    const response = { id: body.id, result: request.reply };
 
     scope.body[request.method] = body;
     scope.requests++;

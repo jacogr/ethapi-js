@@ -1,6 +1,6 @@
 {
   "name": "ethapi-js",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "main": "index.js",
   "jsnext:main": "lib/index.js",
   "author": "Jaco Greeff <jacogr@gmail.com>",
@@ -56,7 +56,7 @@
   "dependencies": {
     "bignumber.js": "^2.3.0",
     "es6-promise": "^3.2.1",
-    "ethabi-js": "^0.0.51",
+    "ethabi-js": "^0.0.54",
     "isomorphic-fetch": "^2.2.1",
     "js-sha3": "^0.5.1"
   }

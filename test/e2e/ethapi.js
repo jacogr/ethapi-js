@@ -1,10 +1,17 @@
 import EthApi from '../../lib';
 
-const transport = new EthApi.Transport.Http('127.0.0.1', 8545);
-const ethapi = new EthApi(transport);
+function createApi (transport) {
+  if (process.env.DEBUG) {
+    transport.setDebug(true);
+  }
 
-if (process.env.DEBUG) {
-  transport.setDebug(true);
+  return new EthApi(transport);
 }
 
-export default ethapi;
+export function createHttpApi () {
+  return createApi(new EthApi.Transport.Http('http://localhost:8545'));
+}
+
+export function createWsApi () {
+  return createApi(new EthApi.Transport.Ws('ws://localhost:8546'));
+}

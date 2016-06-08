@@ -231,6 +231,10 @@ var Contract = function () {
           return _this3._eth.eth.sendTransaction(_this3._encodeOptions(func, options, values));
         };
 
+        func.signAndSendTransaction = function (options, values, password) {
+          return _this3._eth.personal.signAndSendTransaction(_this3._encodeOptions(func, options, values), password);
+        };
+
         func.estimateGas = function (options, values) {
           return _this3._eth.eth.estimateGas(_this3._encodeOptions(func, options, values));
         };
@@ -1186,4 +1190,4 @@ EthApi.Transport = {
   Http: Http
 };
 
-module.exports = EthApi;/* Tue Jun  7 08:11:12 UTC 2016 */
+module.exports = EthApi;/* Wed Jun  8 11:21:16 UTC 2016 */

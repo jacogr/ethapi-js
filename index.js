@@ -32,23 +32,43 @@ babelHelpers.createClass = function () {
   };
 }();
 
+babelHelpers.inherits = function (subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+};
+
+babelHelpers.possibleConstructorReturn = function (self, call) {
+  if (!self) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return call && (typeof call === "object" || typeof call === "function") ? call : self;
+};
+
 babelHelpers;
 
-/* global fetch */
+var JsonRpcBase = function () {
+  function JsonRpcBase() {
+    babelHelpers.classCallCheck(this, JsonRpcBase);
 
-var Http = function () {
-  function Http(hostOrPath, port) {
-    babelHelpers.classCallCheck(this, Http);
-
-    this._host = hostOrPath;
-    this._port = port;
     this._id = 1;
     this._debug = false;
   }
 
-  babelHelpers.createClass(Http, [{
-    key: '_encodeBody',
-    value: function _encodeBody(method, params) {
+  babelHelpers.createClass(JsonRpcBase, [{
+    key: 'encode',
+    value: function encode(method, params) {
       return JSON.stringify({
         jsonrpc: '2.0',
         method: method,
@@ -57,13 +77,58 @@ var Http = function () {
       });
     }
   }, {
+    key: 'setDebug',
+    value: function setDebug(flag) {
+      this._debug = flag;
+    }
+  }, {
+    key: 'error',
+    value: function error(_error) {
+      if (this.isDebug) {
+        console.error(_error);
+      }
+    }
+  }, {
+    key: 'log',
+    value: function log(_log) {
+      if (this.isDebug) {
+        console.log(_log);
+      }
+    }
+  }, {
+    key: 'id',
+    get: function get() {
+      return this._id;
+    }
+  }, {
+    key: 'isDebug',
+    get: function get() {
+      return this._debug;
+    }
+  }]);
+  return JsonRpcBase;
+}();
+
+/* global fetch */
+
+var Http = function (_JsonRpcBase) {
+  babelHelpers.inherits(Http, _JsonRpcBase);
+
+  function Http(url) {
+    babelHelpers.classCallCheck(this, Http);
+
+    var _this = babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(Http).call(this));
+
+    _this._url = url;
+    return _this;
+  }
+
+  babelHelpers.createClass(Http, [{
     key: '_encodeOptions',
     value: function _encodeOptions(method, params) {
-      var json = this._encodeBody(method, params);
+      var json = this.encode(method, params);
 
-      if (this._debug) {
-        console.log('>', json);
-      }
+      this.log(json);
 
       return {
         method: 'POST',
@@ -76,57 +141,97 @@ var Http = function () {
       };
     }
   }, {
-    key: '_getEndpoint',
-    value: function _getEndpoint() {
-      if (!this._port) {
-        return this._host;
-      }
-
-      return 'http://' + this._host + ':' + this._port + '/';
-    }
-  }, {
     key: 'execute',
     value: function execute(method) {
-      var _this = this;
+      var _this2 = this;
 
       for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         params[_key - 1] = arguments[_key];
       }
 
-      return fetch(this._getEndpoint(), this._encodeOptions(method, params)).then(function (response) {
+      return fetch(this._url, this._encodeOptions(method, params)).then(function (response) {
         if (response.status !== 200) {
-          if (_this._debug) {
-            console.error('<', JSON.stringify({ status: response.status, statusText: response.statusText }));
-          }
-
+          _this2.error(JSON.stringify({ status: response.status, statusText: response.statusText }));
           throw new Error(response.status + ': ' + response.statusText);
         }
 
         return response.json();
       }).then(function (result) {
         if (result.error) {
-          if (_this._debug) {
-            console.error('<', JSON.stringify(result));
-          }
-
+          _this2.error(JSON.stringify(result));
           throw new Error(result.error.code + ': ' + result.error.message);
         }
 
-        if (_this._debug) {
-          console.log('<', JSON.stringify(result));
-        }
-
+        _this2.log(JSON.stringify(result));
         return result.result;
       });
     }
-  }, {
-    key: 'setDebug',
-    value: function setDebug(flag) {
-      this._debug = flag;
-    }
   }]);
   return Http;
-}();
+}(JsonRpcBase);
+
+/* global WebSocket */
+
+var Ws = function (_JsonRpcBase) {
+  babelHelpers.inherits(Ws, _JsonRpcBase);
+
+  function Ws(url, protocols) {
+    babelHelpers.classCallCheck(this, Ws);
+
+    var _this = babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(Ws).call(this));
+
+    _this._onMessage = function (event) {
+      var result = JSON.parse(event.data);
+      var _this$_messages$resul = _this._messages[result.id];
+      var resolve = _this$_messages$resul.resolve;
+      var reject = _this$_messages$resul.reject;
+
+
+      if (result.error) {
+        _this.error(event.data);
+
+        reject(new Error(result.error.code + ': ' + result.error.message));
+        delete _this._messages[result.id];
+        return;
+      }
+
+      _this.log(event.data);
+
+      resolve(result.result);
+      delete _this._messages[result.id];
+    };
+
+    _this._messages = {};
+
+    _this._ws = new WebSocket(url, protocols);
+    _this._ws.onerror = _this._onError;
+    _this._ws.onopen = _this._onOpen;
+    _this._ws.onclose = _this._onClose;
+    _this._ws.onmessage = _this._onMessage;
+    return _this;
+  }
+
+  babelHelpers.createClass(Ws, [{
+    key: 'execute',
+    value: function execute(method) {
+      var _this2 = this;
+
+      for (var _len = arguments.length, params = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        params[_key - 1] = arguments[_key];
+      }
+
+      return new Promise(function (resolve, reject) {
+        _this2._messages[_this2.id] = { resolve: resolve, reject: reject };
+        var json = _this2.encode(method, params);
+
+        _this2.log(json);
+
+        _this2._ws.send(json);
+      });
+    }
+  }]);
+  return Ws;
+}(JsonRpcBase);
 
 function isFunction(test) {
   return Object.prototype.toString.call(test) === '[object Function]';
@@ -1187,7 +1292,8 @@ var EthApi = function () {
 
 EthApi.Contract = Contract;
 EthApi.Transport = {
-  Http: Http
+  Http: Http,
+  Ws: Ws
 };
 
-module.exports = EthApi;/* Wed Jun  8 11:21:16 UTC 2016 */
+module.exports = EthApi;/* Wed Jun  8 18:50:02 UTC 2016 */

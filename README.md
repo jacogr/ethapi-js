@@ -12,7 +12,7 @@ A thin, fast, low-level Promise-based wrapper around the Ethereum APIs.
 Clone the repo and install dependencies via `npm install`. Tests can be executed via
 
 - `npm run testOnce` (100% covered unit tests)
-- `npm run testE2E` (E2E against a running RPC-enabled testnet Parity/Geth instance, `parity --testnet --rpc`)
+- `npm run testE2E` (E2E against a running RPC-enabled testnet Parity/Geth instance, `parity --testnet` and for WebScokets, `geth --testnet --ws --wsorigins '*' --rpc`)
 - setting the environment `DEBUG=true` will display the RPC POST bodies and responses on E2E tests
 
 ## installation
@@ -28,7 +28,7 @@ Install the package with `npm install --save ethapi-js` from the [npm registry e
 import EthApi from 'ethapi-js';
 
 // do the setup
-const transport = new EthApi.Transport.Http('127.0.0.1', 8545);
+const transport = new EthApi.Transport.Http('http://localhost:8545');  // or .Ws('ws://localhost:8546')
 const ethapi = new EthApi(transport);
 ```
 

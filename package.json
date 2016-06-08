@@ -1,6 +1,6 @@
 {
   "name": "ethapi-js",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "main": "index.js",
   "jsnext:main": "lib/index.js",
   "author": "Jaco Greeff <jacogr@gmail.com>",
@@ -45,11 +45,13 @@
     "ethereum-rpc-json": "^0.0.1",
     "istanbul": "^1.0.0-alpha.2",
     "mocha": "^2.5.3",
+    "mock-socket": "^3.0.0",
     "nock": "^8.0.0",
     "rollup": "^0.26.3",
     "rollup-plugin-babel": "^2.4.0",
     "sinon": "^1.17.4",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "websocket": "^1.0.23"
   },
   "dependencies": {
     "bignumber.js": "^2.3.0",

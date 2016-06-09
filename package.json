@@ -47,7 +47,7 @@
     "mocha": "^2.5.3",
     "mock-socket": "^3.0.0",
     "nock": "^8.0.0",
-    "rollup": "^0.26.3",
+    "rollup": "^0.29.0",
     "rollup-plugin-babel": "^2.4.0",
     "sinon": "^1.17.4",
     "sinon-chai": "^2.8.0",
@@ -56,7 +56,7 @@
   "dependencies": {
     "bignumber.js": "^2.3.0",
     "es6-promise": "^3.2.1",
-    "ethabi-js": "^0.0.56",
+    "ethabi-js": "^0.0.57",
     "isomorphic-fetch": "^2.2.1",
     "js-sha3": "^0.5.1"
   }

@@ -6,15 +6,13 @@ var EthAbi = _interopDefault(require('ethabi-js'));
 var BigNumber = _interopDefault(require('bignumber.js'));
 var jsSha3 = require('js-sha3');
 
-var babelHelpers = {};
-
-babelHelpers.classCallCheck = function (instance, Constructor) {
+var classCallCheck = function (instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
 };
 
-babelHelpers.createClass = function () {
+var createClass = function () {
   function defineProperties(target, props) {
     for (var i = 0; i < props.length; i++) {
       var descriptor = props[i];
@@ -32,7 +30,7 @@ babelHelpers.createClass = function () {
   };
 }();
 
-babelHelpers.inherits = function (subClass, superClass) {
+var inherits = function (subClass, superClass) {
   if (typeof superClass !== "function" && superClass !== null) {
     throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
   }
@@ -48,7 +46,7 @@ babelHelpers.inherits = function (subClass, superClass) {
   if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
 };
 
-babelHelpers.possibleConstructorReturn = function (self, call) {
+var possibleConstructorReturn = function (self, call) {
   if (!self) {
     throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
   }
@@ -56,17 +54,15 @@ babelHelpers.possibleConstructorReturn = function (self, call) {
   return call && (typeof call === "object" || typeof call === "function") ? call : self;
 };
 
-babelHelpers;
-
 var JsonRpcBase = function () {
   function JsonRpcBase() {
-    babelHelpers.classCallCheck(this, JsonRpcBase);
+    classCallCheck(this, JsonRpcBase);
 
     this._id = 1;
     this._debug = false;
   }
 
-  babelHelpers.createClass(JsonRpcBase, [{
+  createClass(JsonRpcBase, [{
     key: 'encode',
     value: function encode(method, params) {
       return JSON.stringify({
@@ -112,18 +108,18 @@ var JsonRpcBase = function () {
 /* global fetch */
 
 var Http = function (_JsonRpcBase) {
-  babelHelpers.inherits(Http, _JsonRpcBase);
+  inherits(Http, _JsonRpcBase);
 
   function Http(url) {
-    babelHelpers.classCallCheck(this, Http);
+    classCallCheck(this, Http);
 
-    var _this = babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(Http).call(this));
+    var _this = possibleConstructorReturn(this, Object.getPrototypeOf(Http).call(this));
 
     _this._url = url;
     return _this;
   }
 
-  babelHelpers.createClass(Http, [{
+  createClass(Http, [{
     key: '_encodeOptions',
     value: function _encodeOptions(method, params) {
       var json = this.encode(method, params);
@@ -173,12 +169,12 @@ var Http = function (_JsonRpcBase) {
 /* global WebSocket */
 
 var Ws = function (_JsonRpcBase) {
-  babelHelpers.inherits(Ws, _JsonRpcBase);
+  inherits(Ws, _JsonRpcBase);
 
   function Ws(url, protocols) {
-    babelHelpers.classCallCheck(this, Ws);
+    classCallCheck(this, Ws);
 
-    var _this = babelHelpers.possibleConstructorReturn(this, Object.getPrototypeOf(Ws).call(this));
+    var _this = possibleConstructorReturn(this, Object.getPrototypeOf(Ws).call(this));
 
     _this._onMessage = function (event) {
       var result = JSON.parse(event.data);
@@ -211,7 +207,7 @@ var Ws = function (_JsonRpcBase) {
     return _this;
   }
 
-  babelHelpers.createClass(Ws, [{
+  createClass(Ws, [{
     key: 'execute',
     value: function execute(method) {
       var _this2 = this;
@@ -249,7 +245,7 @@ var Contract = function () {
   function Contract(eth, abi) {
     var _this = this;
 
-    babelHelpers.classCallCheck(this, Contract);
+    classCallCheck(this, Contract);
 
     if (!isInstanceOf(eth, EthApi)) {
       throw new Error('EthApi needs to be provided to Contract instance');
@@ -269,7 +265,7 @@ var Contract = function () {
     this._events = this._abi.events;
   }
 
-  babelHelpers.createClass(Contract, [{
+  createClass(Contract, [{
     key: 'at',
     value: function at(address) {
       this._address = address;
@@ -474,12 +470,12 @@ function inOptions(options) {
 
 var Db = function () {
   function Db(transport) {
-    babelHelpers.classCallCheck(this, Db);
+    classCallCheck(this, Db);
 
     this._transport = transport;
   }
 
-  babelHelpers.createClass(Db, [{
+  createClass(Db, [{
     key: 'getHex',
     value: function getHex(dbName, keyName) {
       return this._transport.execute('db_getHex', dbName, keyName);
@@ -640,12 +636,12 @@ function outTransaction(tx) {
 
 var Eth = function () {
   function Eth(transport) {
-    babelHelpers.classCallCheck(this, Eth);
+    classCallCheck(this, Eth);
 
     this._transport = transport;
   }
 
-  babelHelpers.createClass(Eth, [{
+  createClass(Eth, [{
     key: 'accounts',
     value: function accounts() {
       return this._transport.execute('eth_accounts').then(function (accounts) {
@@ -958,12 +954,12 @@ var Eth = function () {
 
 var Ethcore = function () {
   function Ethcore(transport) {
-    babelHelpers.classCallCheck(this, Ethcore);
+    classCallCheck(this, Ethcore);
 
     this._transport = transport;
   }
 
-  babelHelpers.createClass(Ethcore, [{
+  createClass(Ethcore, [{
     key: 'defaultExtraData',
     value: function defaultExtraData() {
       return this._transport.execute('ethcore_defaultExtraData');
@@ -1054,12 +1050,12 @@ var Ethcore = function () {
 
 var Net = function () {
   function Net(transport) {
-    babelHelpers.classCallCheck(this, Net);
+    classCallCheck(this, Net);
 
     this._transport = transport;
   }
 
-  babelHelpers.createClass(Net, [{
+  createClass(Net, [{
     key: 'listening',
     value: function listening() {
       return this._transport.execute('net_listening');
@@ -1080,12 +1076,12 @@ var Net = function () {
 
 var Personal = function () {
   function Personal(transport) {
-    babelHelpers.classCallCheck(this, Personal);
+    classCallCheck(this, Personal);
 
     this._transport = transport;
   }
 
-  babelHelpers.createClass(Personal, [{
+  createClass(Personal, [{
     key: 'listAccounts',
     value: function listAccounts() {
       return this._transport.execute('personal_listAccounts').then(function (accounts) {
@@ -1115,12 +1111,12 @@ var Personal = function () {
 
 var Personal$1 = function () {
   function Personal(transport) {
-    babelHelpers.classCallCheck(this, Personal);
+    classCallCheck(this, Personal);
 
     this._transport = transport;
   }
 
-  babelHelpers.createClass(Personal, [{
+  createClass(Personal, [{
     key: 'addToGroup',
     value: function addToGroup(identity) {
       return this._transport.execute('shh_addToGroup', identity);
@@ -1176,12 +1172,12 @@ var Personal$1 = function () {
 
 var Trace = function () {
   function Trace(transport) {
-    babelHelpers.classCallCheck(this, Trace);
+    classCallCheck(this, Trace);
 
     this._transport = transport;
   }
 
-  babelHelpers.createClass(Trace, [{
+  createClass(Trace, [{
     key: 'filter',
     value: function filter(filterObj) {
       return this._transport.execute('trace_filter', filterObj);
@@ -1209,12 +1205,12 @@ var Trace = function () {
 
 var Web3 = function () {
   function Web3(transport) {
-    babelHelpers.classCallCheck(this, Web3);
+    classCallCheck(this, Web3);
 
     this._transport = transport;
   }
 
-  babelHelpers.createClass(Web3, [{
+  createClass(Web3, [{
     key: 'clientVersion',
     value: function clientVersion() {
       return this._transport.execute('web3_clientVersion');
@@ -1230,7 +1226,7 @@ var Web3 = function () {
 
 var EthApi = function () {
   function EthApi(transport) {
-    babelHelpers.classCallCheck(this, EthApi);
+    classCallCheck(this, EthApi);
 
     if (!transport || !isFunction(transport.execute)) {
       throw new Error('EthApi needs transport with execute() function defined');
@@ -1246,7 +1242,7 @@ var EthApi = function () {
     this._web3 = new Web3(transport);
   }
 
-  babelHelpers.createClass(EthApi, [{
+  createClass(EthApi, [{
     key: 'db',
     get: function get() {
       return this._db;
@@ -1296,4 +1292,4 @@ EthApi.Transport = {
   Ws: Ws
 };
 
-module.exports = EthApi;/* Thu Jun  9 05:43:41 UTC 2016 */
+module.exports = EthApi;/* Fri Jun 17 08:09:13 UTC 2016 */

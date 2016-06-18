@@ -272,13 +272,36 @@ var Contract = function () {
       return this;
     }
   }, {
+    key: 'deploy',
+    value: function deploy(code, values, password) {
+      var _this2 = this;
+
+      var options = {
+        data: code,
+        gas: 900000
+      };
+
+      return this._eth.personal.signAndSendTransaction(this._encodeOptions(this.constructors[0], options, values), password).then(function (txhash) {
+        return _this2.pollTransactionReceipt(txhash);
+      }).then(function (receipt) {
+        _this2._address = receipt.contractAddress;
+        return _this2._eth.eth.getCode(_this2._address);
+      }).then(function (code) {
+        if (code === '0x') {
+          throw new Error('Contract not deployed, getCode returned 0x');
+        }
+
+        return _this2.address;
+      });
+    }
+  }, {
     key: 'parseTransactionEvents',
     value: function parseTransactionEvents(receipt) {
-      var _this2 = this;
+      var _this3 = this;
 
       receipt.logs = receipt.logs.map(function (log) {
         var signature = log.topics[0].substr(2);
-        var event = _this2.events.find(function (evt) {
+        var event = _this3.events.find(function (evt) {
           return evt.signature === signature;
         });
 
@@ -301,22 +324,50 @@ var Contract = function () {
       return receipt;
     }
   }, {
+    key: 'pollTransactionReceipt',
+    value: function pollTransactionReceipt(txhash) {
+      var _this4 = this;
+
+      return new Promise(function (resolve, reject) {
+        var timeout = function timeout() {
+          _this4._eth.eth.getTransactionReceipt(txhash).then(function (receipt) {
+            if (receipt) {
+              resolve(receipt);
+            } else {
+              setTimeout(timeout, 500);
+            }
+          }).catch(function (error) {
+            reject(error);
+          });
+        };
+
+        timeout();
+      });
+    }
+  }, {
     key: '_encodeOptions',
     value: function _encodeOptions(func, options, values) {
       var tokens = this._abi.encodeTokens(func.inputParamTypes(), values);
 
-      options.to = options.to || this._address;
-      options.data = '0x' + func.encodeCall(tokens);
+      if (options.data && options.data.substr(0, 2) === '0x') {
+        options.data = options.data.substr(2);
+      }
+
+      if (options.to || this._address) {
+        options.to = options.to || this._address;
+      }
+
+      options.data = '0x' + (options.data || '') + func.encodeCall(tokens);
 
       return options;
     }
   }, {
     key: '_bindFunction',
     value: function _bindFunction(func) {
-      var _this3 = this;
+      var _this5 = this;
 
       func.call = function (options, values) {
-        return _this3._eth.eth.call(_this3._encodeOptions(func, options, values)).then(function (encoded) {
+        return _this5._eth.eth.call(_this5._encodeOptions(func, options, values)).then(function (encoded) {
           return func.decodeOutput(encoded);
         }).then(function (tokens) {
           return tokens.map(function (token) {
@@ -329,15 +380,15 @@ var Contract = function () {
 
       if (!func.constant) {
         func.sendTransaction = function (options, values) {
-          return _this3._eth.eth.sendTransaction(_this3._encodeOptions(func, options, values));
+          return _this5._eth.eth.sendTransaction(_this5._encodeOptions(func, options, values));
         };
 
         func.signAndSendTransaction = function (options, values, password) {
-          return _this3._eth.personal.signAndSendTransaction(_this3._encodeOptions(func, options, values), password);
+          return _this5._eth.personal.signAndSendTransaction(_this5._encodeOptions(func, options, values), password);
         };
 
         func.estimateGas = function (options, values) {
-          return _this3._eth.eth.estimateGas(_this3._encodeOptions(func, options, values));
+          return _this5._eth.eth.estimateGas(_this5._encodeOptions(func, options, values));
         };
       }
 
@@ -1292,4 +1343,4 @@ EthApi.Transport = {
   Ws: Ws
 };
 
-module.exports = EthApi;/* Fri Jun 17 08:09:13 UTC 2016 */
+module.exports = EthApi;/* Sat Jun 18 07:38:37 UTC 2016 */

@@ -1,6 +1,6 @@
 {
   "name": "ethapi-js",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "main": "index.js",
   "jsnext:main": "lib/index.js",
   "author": "Jaco Greeff <jacogr@gmail.com>",

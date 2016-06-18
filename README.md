@@ -90,7 +90,7 @@ deploy
 
 ```javascript
 contract
-  .deploy('0xcode', [params], 'superPassword')
+  .deploy('0xc0de', [params], 'superPassword')
   .then((address) => {
     console.log(`the contract was deployed at ${address}`);
   });

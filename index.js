@@ -1343,4 +1343,4 @@ EthApi.Transport = {
   Ws: Ws
 };
 
-module.exports = EthApi;/* Sat Jun 18 07:38:37 UTC 2016 */
+module.exports = EthApi;/* Sat Jun 18 07:40:39 UTC 2016 */

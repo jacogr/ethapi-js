@@ -86,6 +86,26 @@ const abi = [{ name: 'callMe', inputs: [{ type: 'bool', ...}, { type: 'string', 
 const contract = new EthApi.Contract(ethapi, abi);
 ```
 
+deploy
+
+```javascript
+contract
+  .deploy('0xcode', [params], 'superPassword')
+  .then((address) => {
+    console.log(`the contract was deployed at ${address}`);
+  });
+```
+
+attach a contract at address
+
+```javascript
+// via the constructor & .at function
+const contract = new EthApi.Contract(ethapi, abi).at('0xa9280...7347b');
+// or on an already initialised contract
+contract.at('0xa9280...7347b');
+// perform calls here
+```
+
 find & call a function
 
 ```javascript

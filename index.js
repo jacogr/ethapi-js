@@ -353,10 +353,6 @@ var Contract = function () {
         options.data = options.data.substr(2);
       }
 
-      if (options.to || this._address) {
-        options.to = options.to || this._address;
-      }
-
       options.data = '0x' + (options.data || '') + func.encodeCall(tokens);
 
       return options;
@@ -366,8 +362,13 @@ var Contract = function () {
     value: function _bindFunction(func) {
       var _this5 = this;
 
+      var addAddress = function addAddress(options) {
+        options.to = options.to || _this5._address;
+        return options;
+      };
+
       func.call = function (options, values) {
-        return _this5._eth.eth.call(_this5._encodeOptions(func, options, values)).then(function (encoded) {
+        return _this5._eth.eth.call(_this5._encodeOptions(func, addAddress(options), values)).then(function (encoded) {
           return func.decodeOutput(encoded);
         }).then(function (tokens) {
           return tokens.map(function (token) {
@@ -380,15 +381,15 @@ var Contract = function () {
 
       if (!func.constant) {
         func.sendTransaction = function (options, values) {
-          return _this5._eth.eth.sendTransaction(_this5._encodeOptions(func, options, values));
+          return _this5._eth.eth.sendTransaction(_this5._encodeOptions(func, addAddress(options), values));
         };
 
         func.signAndSendTransaction = function (options, values, password) {
-          return _this5._eth.personal.signAndSendTransaction(_this5._encodeOptions(func, options, values), password);
+          return _this5._eth.personal.signAndSendTransaction(_this5._encodeOptions(func, addAddress(options), values), password);
         };
 
         func.estimateGas = function (options, values) {
-          return _this5._eth.eth.estimateGas(_this5._encodeOptions(func, options, values));
+          return _this5._eth.eth.estimateGas(_this5._encodeOptions(func, addAddress(options), values));
         };
       }
 
@@ -1343,4 +1344,4 @@ EthApi.Transport = {
   Ws: Ws
 };
 
-module.exports = EthApi;/* Sat Jun 18 07:40:39 UTC 2016 */
+module.exports = EthApi;/* Sat Jun 18 08:20:56 UTC 2016 */

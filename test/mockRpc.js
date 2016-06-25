@@ -67,9 +67,13 @@ export function endpointTest (instance, moduleId, name) {
     it(`maps to ${moduleId}_${name} via RPC`, () => {
       const scope = mockHttp([{ method: `${moduleId}_${name}`, reply: {} }]);
 
-      return instance[moduleId][name]().then(() => {
-        expect(scope.isDone()).to.be.true;
-      });
+      return instance[moduleId][name]()
+        .then(() => {
+          expect(scope.isDone()).to.be.true;
+        })
+        .catch(() => {
+          nock.cleanAll();
+        });
     });
   });
 }

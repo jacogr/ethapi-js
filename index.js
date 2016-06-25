@@ -1012,6 +1012,16 @@ var Ethcore = function () {
   }
 
   createClass(Ethcore, [{
+    key: 'acceptNonReservedPeers',
+    value: function acceptNonReservedPeers() {
+      return this._transport.execute('ethcore_acceptNonReservedPeers');
+    }
+  }, {
+    key: 'addReservedPeer',
+    value: function addReservedPeer(encode) {
+      return this._transport.execute('ethcore_addReservedPeer', encode);
+    }
+  }, {
     key: 'defaultExtraData',
     value: function defaultExtraData() {
       return this._transport.execute('ethcore_defaultExtraData');
@@ -1025,6 +1035,11 @@ var Ethcore = function () {
     key: 'devLogsLevels',
     value: function devLogsLevels() {
       return this._transport.execute('ethcore_devLogsLevels');
+    }
+  }, {
+    key: 'dropNonReservedPeers',
+    value: function dropNonReservedPeers() {
+      return this._transport.execute('ethcore_dropNonReservedPeers');
     }
   }, {
     key: 'extraData',
@@ -1062,6 +1077,16 @@ var Ethcore = function () {
       return this._transport.execute('ethcore_nodeName');
     }
   }, {
+    key: 'removeReservedPeer',
+    value: function removeReservedPeer(encode) {
+      return this._transport.execute('ethcore_removeReservedPeer', encode);
+    }
+  }, {
+    key: 'rpcSettings',
+    value: function rpcSettings() {
+      return this._transport.execute('ethcore_rpcSettings');
+    }
+  }, {
     key: 'setAuthor',
     value: function setAuthor(address) {
       return this._transport.execute('ethcore_setAuthor', inAddress(address));
@@ -1092,9 +1117,9 @@ var Ethcore = function () {
       return this._transport.execute('ethcore_transactionsLimit').then(outNumber);
     }
   }, {
-    key: 'rpcSettings',
-    value: function rpcSettings() {
-      return this._transport.execute('ethcore_rpcSettings');
+    key: 'unsignedTransactionsCount',
+    value: function unsignedTransactionsCount() {
+      return this._transport.execute('ethcore_unsignedTransactionsCount').then(outNumber);
     }
   }]);
   return Ethcore;
@@ -1149,6 +1174,11 @@ var Personal = function () {
     key: 'signAndSendTransaction',
     value: function signAndSendTransaction(options, password) {
       return this._transport.execute('personal_signAndSendTransaction', inOptions(options), password);
+    }
+  }, {
+    key: 'signerEnabled',
+    value: function signerEnabled() {
+      return this._transport.execute('personal_signerEnabled');
     }
   }, {
     key: 'unlockAccount',
@@ -1344,4 +1374,4 @@ EthApi.Transport = {
   Ws: Ws
 };
 
-module.exports = EthApi;/* Sat Jun 18 08:20:56 UTC 2016 */
+module.exports = EthApi;/* Sat Jun 25 08:13:07 UTC 2016 */

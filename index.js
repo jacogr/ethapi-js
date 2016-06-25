@@ -1306,6 +1306,37 @@ var Web3 = function () {
   return Web3;
 }();
 
+var UNITS = ['wei', 'ada', 'babbage', 'shannon', 'szabo', 'finney', 'ether', 'kether', 'mether', 'gether', 'tether'];
+
+function _getUnitMultiplier(unit) {
+  var position = UNITS.indexOf(unit.toLowerCase());
+
+  if (position === -1) {
+    throw new Error('Unknown unit ' + unit + ' passed to wei formatter');
+  }
+
+  return Math.pow(10, position * 3);
+}
+
+function fromWei(value) {
+  var unit = arguments.length <= 1 || arguments[1] === undefined ? 'ether' : arguments[1];
+
+  return new BigNumber(value).div(_getUnitMultiplier(unit));
+}
+
+function toWei(value) {
+  var unit = arguments.length <= 1 || arguments[1] === undefined ? 'ether' : arguments[1];
+
+  return new BigNumber(value).mul(_getUnitMultiplier(unit));
+}
+
+var format = {
+  isAddressValid: isAddress,
+  fromWei: fromWei,
+  toChecksumAddress: toChecksumAddress,
+  toWei: toWei
+};
+
 var EthApi = function () {
   function EthApi(transport) {
     classCallCheck(this, EthApi);
@@ -1368,10 +1399,11 @@ var EthApi = function () {
   return EthApi;
 }();
 
+EthApi.format = format;
 EthApi.Contract = Contract;
 EthApi.Transport = {
   Http: Http,
   Ws: Ws
 };
 
-module.exports = EthApi;/* Sat Jun 25 08:13:07 UTC 2016 */
+module.exports = EthApi;/* Sat Jun 25 14:55:35 UTC 2016 */
